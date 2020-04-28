@@ -1,8 +1,10 @@
-import pygame
-
-pygame.init()
-screen=pygame.display.set_mode((800, 600))
-
-while True:
-    pass
-pygame.quit()
+def makeboard():
+    board=[]
+    file = open('board.txt', 'r')
+    f=file.read()
+    r=f.splitlines()
+    file.close()
+    for i in r:
+        board.append(i.split(','))
+    return board
+print(makeboard())
