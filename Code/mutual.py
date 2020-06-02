@@ -1,6 +1,5 @@
 import pygame
 import data_f
-defturn='plar'
 def startgame():
     pygame.init()
     screen=pygame.display.set_mode((data_f.screenwidth,data_f.screenheight))
@@ -31,12 +30,6 @@ def maketrack():
 def turn(n):
     players=['plar','plab','plag','play']
     return players[n]
-    #     t.append(i.split())
-    # for m in t:
-    #     p=()
-    #     for j in m:
-    #         p+=(int(j),)
-    #     m=[p]
     
 screen=startgame()
 b=makeboard()

@@ -104,22 +104,46 @@ def dice():
         pygame.time.delay(100)
     data_structures.dice_roll.append(num)
     pygame.time.delay(5000)
-def move(start,die):
+def check_valid(start):
     selectedtoken=b[start[0]][start[1]]
-    # destination=b[end[0]][end[1]]
-    if selectedtoken==defturn:
+    if selectedtoken[:4]==data_structures.defturn:
+        return True
+    else:
+        False
+def move(start,die):
+    tokinfo=()
+    selectedtoken=b[start[0]][start[1]]
+    # print(selectedtoken)
+    print(selectedtoken[:4],data_structures.defturn)
+    if selectedtoken[:4]==data_structures.defturn:
         if len(selectedtoken)>2:
-            print(selectedtoken)
-            # for i in data_structures.Players:
-            #     if i.get('playcolor')==defturn:
-                    
+            token=selectedtoken[3:5]
+            # print(token)
+            for i in data_structures.Players:
+                if i.get('playcolor')==data_structures.defturn:
+                    if i['tokens_on_track']==[]:
+                        for t in i['tokens_in_field']:
+                            print(t)
+                            if t[0]==token:
+                                tokinfo=t
+                                # print(tokinfo)
+                                for s in data_structures.stops:
+                                    if len(s[1])>1 and s[1][0]==selectedtoken[3]:
+                                        track[s[0]].append(tokinfo)
+                                        temp=track[s[0]]
+                                        destination=b[temp[0][0]][temp[0][1]]
+                                        print(destination)
+                                        # print(b[t[1][0]][t[1][0]])
+                                        col=destination[-1]
+                                        if 's' in destination:
+                                            col+='s'+col
+                                        b[temp[0][0]][temp[0][1]]=selectedtoken[:4]+col
+                                        b[start[0]][start[1]]=selectedtoken[5:]
+                                        break
+                                    
 
-            #         break
-            col=destination[-1]
-            if 's' in destination:
-                col+='s'+col
-            b[end[0]][end[1]]=selectedtoken[:4]+col
-            b[start[0]][start[1]]=selectedtoken[4:]
+                    break
+            
         else:
             pass
     else:

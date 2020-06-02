@@ -2,6 +2,7 @@ import pygame
 import random
 import data_f
 import data_structures
+import mutual
 from mutual import *
 from board_tokens import *
 from data_structures import *
@@ -35,22 +36,28 @@ def game():
                             col=j
                             row=i
                             print(col,row)
-                            if tile==(col,row):
+                            if len(clickarg)!=0 and tile==(col,row):
                                 tile=()
                                 clickarg=[]
-                            # tile=(col,row)
-                            # clickarg.append(tile)
-                            if len(clickarg)==1:
+                            else:
+                                tile=(col,row)
+                                clickarg.append(tile)
+                            valid=False
+                            if len(clickarg)==1 and is_empty(data_structures.dice_roll)==False and top(data_structures.dice_roll)!='pass' and check_valid(clickarg[0])==True:
+                                valid=True
                                 print(clickarg)
-                                while is_empty(data_structures.dice_roll)==False:
-                                    # move(clickarg[0],top(data_structures.dice_roll))
-                                    pop(data_structures.dice_roll)
-                                clickarg=[]
-                                if n>3:
+                                move(clickarg[0],top(data_structures.dice_roll))
+                                pop(data_structures.dice_roll)
+                            else:
+                                print('invalid')
+                            clickarg=[]
+                            if valid==True and is_empty(data_structures.dice_roll)==True:
+                                if n==3:
                                     n=0
                                 else:
                                     n+=1
-                                defturn=turn(n)
+                                data_structures.defturn=turn(n)
+                                print(data_structures.defturn)
                     
         screen.fill(data_f.screencolor)
         gamestate()
@@ -68,6 +75,7 @@ def game():
             if count==3:
                 while is_empty(data_structures.dice_roll)==False:
                    pop(data_structures.dice_roll) 
+                data_structures.dice_roll.append('pass')
             # else:
                 # mouse=pygame.mouse.get_pos()
                 # press=pygame.mouse.get_pressed()

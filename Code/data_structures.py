@@ -12,6 +12,7 @@ def is_empty(lst):
 #creating the game track consisting of a list with 48 sub-lists aka tiles
 #does not consist of the home column
 bdata=[]
+defturn='plar'
 board=makeboard()
 for i in range(len(board)):
     t=[]
@@ -26,26 +27,10 @@ print (track)
 # p1_3 = 0
 # p1_4 = 0
 
-# track[0].append(('p1_1',0))
-# track[0].append(('p1_2',0))
-# track[0].append(('p1_3',0))
-# track[0].append(('p1_4',0))
-# track[12].append(('p2_1',0))
-# track[12].append(('p2_2',0))
-# track[12].append(('p2_3',0))
-# track[12].append(('p2_4',0))
-# track[24].append(('p3_1',0))
-# track[24].append(('p3_2',0))
-# track[24].append(('p3_3',0))
-# track[24].append(('p3_4',0))
-# track[36].append(('p4_1',0))
-# track[36].append(('p4_2',0))
-# track[36].append(('p4_3',0))
-# track[36].append(('p4_4',0))
 P1 = {
     'playcolor':'plar',
     'tokens_on_track' : [],
-    'tokens_in_field' : [('p1_1',0,0),('p1_2',0,0),('p1_3',0,0),('p1_4',0,0)],
+    'tokens_in_field' : [('r1',(1,1),0),('r2',(1,3),0),('r3',(3,1),0),('r4',(3,3),0)],
     'tokens_won' : 0,
     'ousted' : False,
     'home' : [],
@@ -57,7 +42,7 @@ P1 = {
 P2 = {
     'playcolor':'plab',
     'tokens_on_track' : [],
-    'tokens_in_field' : [('p2_1',12,0),('p2_2',12,0),('p2_3',12,0),('p2_4',12,0)],
+    'tokens_in_field' : [('b1',(1,9),0),('b2',(1,11),0),('b3',(3,9),0),('b4',(3,11),0)],
     'tokens_won' : 0,
     'ousted' : False,
     'home' : [],
@@ -69,7 +54,7 @@ P2 = {
 P3 = {
     'playcolor':'plag',
     'tokens_on_track' : [],
-    'tokens_in_field' : [('p3_1',24,0),('p3_2',24,0),('p3_3',24,0),('p3_4',24,0)],
+    'tokens_in_field' : [('g1',(9,9),0),('g2',(9,11),0),('g3',(11,9),0),('g4',(11,11),0)],
     'tokens_won' : 0,
     'ousted' : False,
     'home' : [],
@@ -81,7 +66,7 @@ P3 = {
 P4 = {
     'playcolor':'play',
     'tokens_on_track' : [],
-    'tokens_in_field' : [('p4_1',36,0),('p4_2',36,0),('p4_3',36,0),('p4_4',36,0)],
+    'tokens_in_field' : [('y1',(9,1),0),('y2',(9,3),0),('y3',(11,1),0),('y4',(11,3),0)],
     'tokens_won' : 0,
     'ousted' : False,
     'home' : [],
@@ -93,7 +78,7 @@ P4 = {
 #dice rolls stack
 dice_roll = []
 #tile indexes for stops
-stops = [0,7,12,19,24,31,36,43]
+stops = [(0,'rh'),(7,'b'),(12,'bh'),(19,'g'),(24,'gh'),(31,'y'),(36,'yh'),(43,'r')]
 
 Players = [P1,P2,P3,P4]
 
@@ -187,43 +172,43 @@ def move_token(player, spaces, track):
 
 
 
-while True: #while the game is going on
-    for player in Players:
-        print(player['ID'])
-        num = 6 #roll dice
+# while True: #while the game is going on
+#     for player in Players:
+#         print(player['ID'])
+#         num = 6 #roll dice
         
-        while num == 6:
-            #roll dice
-            num = int(input('Enter num (1-6):  '))
-            dice_roll.append(num)
+#         while num == 6:
+#             #roll dice
+#             num = int(input('Enter num (1-6):  '))
+#             dice_roll.append(num)
         
-        #checking for 3 sixes
-        count = 0
-        for i in dice_roll:
-            if i == 6:
-                count += 1
-        if count == 3:
-            while 6 in dice_roll:
-                dice_roll.remove(6)
+#         #checking for 3 sixes
+#         count = 0
+#         for i in dice_roll:
+#             if i == 6:
+#                 count += 1
+#         if count == 3:
+#             while 6 in dice_roll:
+#                 dice_roll.remove(6)
 
-        # moving
-        for i in dice_roll:
-            if i == 6 and len(player['tokens_on_track']) == 0:
-                player['tokens_on_track'].append(player['tokens_in_field'].pop())
-            elif i == 6 and len(player['tokens_on_track']) > 0 and len(player['tokens_in_field']) > 0:
-                # print(player['tokens_on_track'])
-                # break
-                user = input('Take out token or move current token? (out/move) ')
-                if user == 'out':
-                    player['tokens_on_track'].append(player['tokens_in_field'].pop())
-                elif user == 'move':
-                    move_token(player,i,track)
-            elif player['tokens_on_track'] == []:
-                print('Cannot move')
-            elif len(player['tokens_on_track']) >= 1:
-                move_token(player,i,track)
-            dice_roll.remove(i)
-        print(track)
+#         # moving
+#         for i in dice_roll:
+#             if i == 6 and len(player['tokens_on_track']) == 0:
+#                 player['tokens_on_track'].append(player['tokens_in_field'].pop())
+#             elif i == 6 and len(player['tokens_on_track']) > 0 and len(player['tokens_in_field']) > 0:
+#                 # print(player['tokens_on_track'])
+#                 # break
+#                 user = input('Take out token or move current token? (out/move) ')
+#                 if user == 'out':
+#                     player['tokens_on_track'].append(player['tokens_in_field'].pop())
+#                 elif user == 'move':
+#                     move_token(player,i,track)
+#             elif player['tokens_on_track'] == []:
+#                 print('Cannot move')
+#             elif len(player['tokens_on_track']) >= 1:
+#                 move_token(player,i,track)
+#             dice_roll.remove(i)
+#         print(track)
     
 
-print(bdata)
+# print(bdata)

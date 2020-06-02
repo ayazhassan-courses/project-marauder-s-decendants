@@ -1,13 +1,13 @@
 r,r,r,r,r,p,p,p,b,b,b,b,b
-r,plarw,r,plarw,r,p,b,sb,b,plabw,b,plabw,b
+r,plar1w,r,plar2w,r,p,b,sb,b,plab1w,b,plab2w,b
 r,r,r,r,r,sb,b,p,b,b,b,b,b
-r,plarw,r,plarw,r,p,b,p,b,plabw,b,plabw,b
+r,plar3w,r,plar4w,r,p,b,p,b,plab3w,b,plab4w,b
 r,r,r,r,r,p,b,p,b,b,b,b,b
 p,sr,p,p,p,p,b,p,p,p,sg,p,p
 p,r,r,r,r,r,wh,g,g,g,g,g,p
 p,p,sr,p,p,p,y,p,p,p,p,sg,p
 y,y,y,y,y,p,y,p,g,g,g,g,g
-y,playw,y,playw,y,p,y,p,g,plagw,g,plagw,g
+y,play1w,y,play2w,y,p,y,p,g,plag1w,g,plag2w,g
 y,y,y,y,y,p,y,sy,g,g,g,g,g
-y,playw,y,playw,y,sy,y,p,g,plagw,g,plagw,g
+y,play3w,y,play4w,y,sy,y,p,g,plag3w,g,plag4w,g
 y,y,y,y,y,p,p,p,g,g,g,g,g
