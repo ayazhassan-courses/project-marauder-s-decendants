@@ -26,7 +26,6 @@ print (track)
 # p1_3 = 0
 # p1_4 = 0
 
-<<<<<<< HEAD:Code/data_structures.py
 # track[0].append(('p1_1',0))
 # track[0].append(('p1_2',0))
 # track[0].append(('p1_3',0))
@@ -45,27 +44,6 @@ print (track)
 # track[36].append(('p4_4',0))
 P1 = {
     'playcolor':'plar',
-=======
-track[0].append(('p1_1',0,0))
-track[0].append(('p1_2',0,0))
-track[0].append(('p1_3',0,0))
-track[0].append(('p1_4',0,0))
-track[12].append(('p2_1',0,0))
-track[12].append(('p2_2',0,0))
-track[12].append(('p2_3',0,0))
-track[12].append(('p2_4',0,0))
-track[24].append(('p3_1',0,0))
-track[24].append(('p3_2',0,0))
-track[24].append(('p3_3',0,0))
-track[24].append(('p3_4',0,0))
-track[36].append(('p4_1',0,0))
-track[36].append(('p4_2',0,0))
-track[36].append(('p4_3',0,0))
-track[36].append(('p4_4',0,0))
-
-P1 = {
-    'ID' : 'Player 1',
->>>>>>> a30f47152f1af1bffcfeb669c84bc1587d445bdd:Code/data structures.py
     'tokens_on_track' : [],
     'tokens_in_field' : [('p1_1',0,0),('p1_2',0,0),('p1_3',0,0),('p1_4',0,0)],
     'tokens_won' : 0,
@@ -77,11 +55,7 @@ P1 = {
 }
 
 P2 = {
-<<<<<<< HEAD:Code/data_structures.py
     'playcolor':'plab',
-=======
-    'ID' : 'Player 2',
->>>>>>> a30f47152f1af1bffcfeb669c84bc1587d445bdd:Code/data structures.py
     'tokens_on_track' : [],
     'tokens_in_field' : [('p2_1',12,0),('p2_2',12,0),('p2_3',12,0),('p2_4',12,0)],
     'tokens_won' : 0,
@@ -93,11 +67,7 @@ P2 = {
 }
 
 P3 = {
-<<<<<<< HEAD:Code/data_structures.py
     'playcolor':'plag',
-=======
-    'ID' : 'Player 3',
->>>>>>> a30f47152f1af1bffcfeb669c84bc1587d445bdd:Code/data structures.py
     'tokens_on_track' : [],
     'tokens_in_field' : [('p3_1',24,0),('p3_2',24,0),('p3_3',24,0),('p3_4',24,0)],
     'tokens_won' : 0,
@@ -109,11 +79,7 @@ P3 = {
 }
 
 P4 = {
-<<<<<<< HEAD:Code/data_structures.py
     'playcolor':'play',
-=======
-    'ID' : 'Player 4',
->>>>>>> a30f47152f1af1bffcfeb669c84bc1587d445bdd:Code/data structures.py
     'tokens_on_track' : [],
     'tokens_in_field' : [('p4_1',36,0),('p4_2',36,0),('p4_3',36,0),('p4_4',36,0)],
     'tokens_won' : 0,
@@ -129,7 +95,7 @@ dice_roll = []
 #tile indexes for stops
 stops = [0,7,12,19,24,31,36,43]
 
-Players = [(P1),(P2),(P3),(P4)]
+Players = [P1,P2,P3,P4]
 
 '''
 move function:
@@ -260,10 +226,4 @@ while True: #while the game is going on
         print(track)
     
 
-<<<<<<< HEAD:Code/data_structures.py
 print(bdata)
-=======
-
-        
-
->>>>>>> a30f47152f1af1bffcfeb669c84bc1587d445bdd:Code/data structures.py
