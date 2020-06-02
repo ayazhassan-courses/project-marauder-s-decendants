@@ -1,5 +1,5 @@
-logo='dice.png'
-titleimage='dice2.png'
+logo='images\dice.png'
+titleimage='images\dice2.png'
 title='Ludo'
 titlefont='Death Star.otf'
 titlefsize=85
@@ -28,8 +28,14 @@ boardblue=(106,110,219)
 boardyellow=(255,233,162)
 boardpath=(229,233,240)
 # elements
-safepoint='signs.png'
+safepoint='images\signs.png'
 diceposx=screenwidth//2
 diceposy=screenheight//2
 dicewidth=100
 diceheight=100
+
+# tokens
+red_token='images\idle_1.png'
+blue_token='images\idle_1.png'
+green_token='images\idle_1.png'
+yellow_token='images\idle_1.png'

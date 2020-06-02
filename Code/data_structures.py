@@ -1,9 +1,24 @@
+import data_f
+from mutual import *
+def push(lst,s):
+    lst.append(s)
+def pop(lst):
+    return lst.pop()
+def top(lst):
+    return lst[-1]
+def is_empty(lst):
+    return len(lst)==0
 
 #creating the game track consisting of a list with 48 sub-lists aka tiles
 #does not consist of the home column
-track = []
-for i in range(48):
-    track.append([])
+bdata=[]
+board=makeboard()
+for i in range(len(board)):
+    t=[]
+    for j in range(len(board[0])):
+        t.append((board[i][j],(data_f.boardstartx+(i*data_f.boardwidthtiles),data_f.boardstarty+(j*data_f.boardheighttiles))))
+    bdata.append(t)
+print (track)
 
 #dictionaries for each player
 # p1_1 = 0
@@ -11,24 +26,24 @@ for i in range(48):
 # p1_3 = 0
 # p1_4 = 0
 
-track[0].append(('p1_1',0))
-track[0].append(('p1_2',0))
-track[0].append(('p1_3',0))
-track[0].append(('p1_4',0))
-track[12].append(('p2_1',0))
-track[12].append(('p2_2',0))
-track[12].append(('p2_3',0))
-track[12].append(('p2_4',0))
-track[24].append(('p3_1',0))
-track[24].append(('p3_2',0))
-track[24].append(('p3_3',0))
-track[24].append(('p3_4',0))
-track[36].append(('p4_1',0))
-track[36].append(('p4_2',0))
-track[36].append(('p4_3',0))
-track[36].append(('p4_4',0))
-
+# track[0].append(('p1_1',0))
+# track[0].append(('p1_2',0))
+# track[0].append(('p1_3',0))
+# track[0].append(('p1_4',0))
+# track[12].append(('p2_1',0))
+# track[12].append(('p2_2',0))
+# track[12].append(('p2_3',0))
+# track[12].append(('p2_4',0))
+# track[24].append(('p3_1',0))
+# track[24].append(('p3_2',0))
+# track[24].append(('p3_3',0))
+# track[24].append(('p3_4',0))
+# track[36].append(('p4_1',0))
+# track[36].append(('p4_2',0))
+# track[36].append(('p4_3',0))
+# track[36].append(('p4_4',0))
 P1 = {
+    'playcolor':'plar',
     'tokens_on_track' : [],
     'tokens_in_field' : [('p1_1',0),('p1_2',0),('p1_3',0),('p1_4',0)],
     'tokens_won' : 0,
@@ -38,6 +53,7 @@ P1 = {
 }
 
 P2 = {
+    'playcolor':'plab',
     'tokens_on_track' : [],
     'tokens_in_field' : [('p2_1',0),('p2_2',0),('p2_3',0),('p2_4',0)],
     'tokens_won' : 0,
@@ -47,6 +63,7 @@ P2 = {
 }
 
 P3 = {
+    'playcolor':'plag',
     'tokens_on_track' : [],
     'tokens_in_field' : [('p3_1',0),('p3_2',0),('p3_3',0),('p3_4',0)],
     'tokens_won' : 0,
@@ -56,6 +73,7 @@ P3 = {
 }
 
 P4 = {
+    'playcolor':'play',
     'tokens_on_track' : [],
     'tokens_in_field' : [('p4_1',0),('p4_2',0),('p4_3',0),('p4_4',0)],
     'tokens_won' : 0,
@@ -67,7 +85,7 @@ P4 = {
 #dice rolls stack
 dice_roll = []
 
-Players = [P1,P2,P3,P4]
+Players = [(P1),(P2),(P3),(P4)]
 
 def move_token(player, spaces):
     if len(player['tokens_on_track']) == 1:
@@ -138,6 +156,4 @@ while True: #while the game is going on
         break
     break
 
-
-        
-# print(track)
+print(bdata)
