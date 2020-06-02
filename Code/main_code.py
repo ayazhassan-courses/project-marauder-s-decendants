@@ -19,7 +19,6 @@ def game():
     clock=pygame.time.Clock() 
     running=True
     n=0
-    defturn='plar'
     while running:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
