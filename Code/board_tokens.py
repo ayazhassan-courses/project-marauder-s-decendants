@@ -122,10 +122,13 @@ def move(start,die):
             for i in data_structures.Players:
                 if i.get('playcolor')==data_structures.defturn:
                     if i['tokens_on_track']==[]:
-                        for t in i['tokens_in_field']:
-                            print(t)
-                            if t[0]==token:
-                                tokinfo=t
+                        for t in range(len(i['tokens_in_field'])):
+                            # print(i['tokens_in_field'][t])
+                            if i['tokens_in_field'][t][0]==token:
+                                pos=t
+                                tokinfo=i['tokens_in_field'][t]
+            
+                                
                                 # print(tokinfo)
                                 for s in data_structures.stops:
                                     if len(s[1])>1 and s[1][0]==selectedtoken[3]:
@@ -140,6 +143,10 @@ def move(start,die):
                                         b[temp[0][0]][temp[0][1]]=selectedtoken[:4]+col
                                         b[start[0]][start[1]]=selectedtoken[5:]
                                         break
+                        i['tokens_on_track'].append(i['tokens_in_field'].pop(pos))
+                        print(i['tokens_on_track'])
+                        print(i['tokens_in_field'])
+                                
                                     
 
                     break
