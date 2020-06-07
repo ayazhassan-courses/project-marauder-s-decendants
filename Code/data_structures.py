@@ -19,7 +19,7 @@ for i in range(len(board)):
     for j in range(len(board[0])):
         t.append((board[i][j],(data_f.boardstartx+(i*data_f.boardwidthtiles),data_f.boardstarty+(j*data_f.boardheighttiles))))
     bdata.append(t)
-print (track)
+# print (track)
 
 #dictionaries for each player
 # p1_1 = 0
@@ -126,48 +126,48 @@ def oust(player,new_pos,track):
                 track[new_pos].remove(i)
                 player['ousted'] == True
 
-def move_token(player, spaces, track):   
-    if len(player['tokens_on_track']) == 1: 
-        full_token = player['tokens_on_track'][0]
-        token,pos,tile_no = player['tokens_on_track'][0] 
-        if not exceeds_track_length(spaces,tile_no):
-            new_pos = new_position(player,pos,spaces)
-            track[pos].remove(full_token)
-            track[new_pos].append((token,new_pos,tile_no+spaces))
-            player['tokens_on_track'].pop()
-            player['tokens_on_track'].append((token,new_pos,tile_no+spaces))
-            oust(player,new_pos,track)
-        else:
-            if player['ousted'] and (pos+spaces)-46 <= 6: #check ousted & available space
-                player['tokens_on_track'].pop() #pop from tokens_on_track
-                player['home'].append((token,(pos+spaces)-46,tile_no+spaces)) #append to home
-                track[pos].remove((token,pos,tile_no))  #remove from track
-            else:
-                print('Cannot move this token.')
-    else:
-        while True:
-            for i in player['tokens_on_track']:
-                print(i[0])
-            to_move = input('Which token do you want to move?')
-            for i in player['tokens_on_track']:
-                if i[0] == to_move:
-                    token,pos,tile_no = i
-                    if not exceeds_track_length(spaces,tile_no):
-                        new_pos = new_position(player,pos,spaces)
-                        track[pos].remove(i)
-                        track[new_pos].append((token,new_pos,tile_no+spaces))
-                        player['tokens_on_track'].remove(i)
-                        player['tokens_on_track'].append((token,new_pos,tile_no+spaces))
-                        oust(player,new_pos,track)
-                        False
-                    else:
-                        if player['ousted'] and (pos+spaces)-46 <= 6: #check ousted & available space
-                            player['tokens_on_track'].pop() #pop from tokens_on_track
-                            player['home'].append((token,(pos+spaces)-46,tile_no+spaces)) #append to home
-                            track[pos].remove((token,pos,tile_no))  #remove from track
-                            False
-                        else:
-                            print('Cannot move this token. Choose another.')
+# def move_token(player, spaces, track):   
+#     if len(player['tokens_on_track']) == 1: 
+#         full_token = player['tokens_on_track'][0]
+#         token,pos,tile_no = player['tokens_on_track'][0] 
+#         if not exceeds_track_length(spaces,tile_no):
+#             new_pos = new_position(player,pos,spaces)
+#             track[pos].remove(full_token)
+#             track[new_pos].append((token,new_pos,tile_no+spaces))
+#             player['tokens_on_track'].pop()
+#             player['tokens_on_track'].append((token,new_pos,tile_no+spaces))
+#             oust(player,new_pos,track)
+#         else:
+#             if player['ousted'] and (pos+spaces)-46 <= 6: #check ousted & available space
+#                 player['tokens_on_track'].pop() #pop from tokens_on_track
+#                 player['home'].append((token,(pos+spaces)-46,tile_no+spaces)) #append to home
+#                 track[pos].remove((token,pos,tile_no))  #remove from track
+#             else:
+#                 print('Cannot move this token.')
+#     else:
+#         while True:
+#             for i in player['tokens_on_track']:
+#                 print(i[0])
+#             to_move = input('Which token do you want to move?')
+#             for i in player['tokens_on_track']:
+#                 if i[0] == to_move:
+#                     token,pos,tile_no = i
+#                     if not exceeds_track_length(spaces,tile_no):
+#                         new_pos = new_position(player,pos,spaces)
+#                         track[pos].remove(i)
+#                         track[new_pos].append((token,new_pos,tile_no+spaces))
+#                         player['tokens_on_track'].remove(i)
+#                         player['tokens_on_track'].append((token,new_pos,tile_no+spaces))
+#                         oust(player,new_pos,track)
+#                         False
+#                     else:
+#                         if player['ousted'] and (pos+spaces)-46 <= 6: #check ousted & available space
+#                             player['tokens_on_track'].pop() #pop from tokens_on_track
+#                             player['home'].append((token,(pos+spaces)-46,tile_no+spaces)) #append to home
+#                             track[pos].remove((token,pos,tile_no))  #remove from track
+#                             False
+#                         else:
+#                             print('Cannot move this token. Choose another.')
 
 
 

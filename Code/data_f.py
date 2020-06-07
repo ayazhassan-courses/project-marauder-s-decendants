@@ -1,6 +1,6 @@
 logo='images\dice.png'
 titleimage='images\dice2.png'
-title='Ludo'
+title='Ludo Wars'
 titlefont='Death Star.otf'
 titlefsize=85
 textfont='Death Star.otf'
@@ -35,7 +35,7 @@ dicewidth=100
 diceheight=100
 
 # tokens
-red_token='images\idle_1.png'
-blue_token='images\idle_1.png'
-green_token='images\idle_1.png'
-yellow_token='images\idle_1.png'
+red_token='images\idle_1-red.png'
+blue_token='images\idle_1-blue.png'
+green_token='images\idle_1-green.png'
+yellow_token='images\idle_1-yellow.png'

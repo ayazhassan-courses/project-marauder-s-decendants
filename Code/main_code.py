@@ -13,6 +13,18 @@ def gamestate():
     callboard()
     separator()
     drawtoken()
+def get_colrows(mouse):
+    cr=()
+    for i in range(len(data_structures.bdata)):
+        for j in range(len(data_structures.bdata[0])):
+            if mouse[0]>data_structures.bdata[i][j][1][0] and mouse[0]<data_structures.bdata[i][j][1][0]+data_f.boardwidthtiles and mouse[1]>data_structures.bdata[i][j][1][1] and mouse[1]<data_structures.bdata[i][j][1][1]+data_f.boardheighttiles:
+                # print(mouse)
+                col=j
+                row=i
+                cr=(col,row)
+                return cr
+    return -1
+
 def game():
     loadtokens()
     tile=()
@@ -20,6 +32,7 @@ def game():
     clock=pygame.time.Clock() 
     running=True
     n=0
+    valid=False
     while running:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
@@ -27,76 +40,62 @@ def game():
             elif event.type==pygame.MOUSEBUTTONDOWN:
                 mouse=pygame.mouse.get_pos()
                 press=pygame.mouse.get_pressed()
-                print(mouse)
-                # if press[0]==1:
-                for i in range(len(data_structures.bdata)):
-                    for j in range(len(data_structures.bdata[0])):
-                        if mouse[0]>data_structures.bdata[i][j][1][0] and mouse[0]<data_structures.bdata[i][j][1][0]+data_f.boardwidthtiles and mouse[1]>data_structures.bdata[i][j][1][1] and mouse[1]<data_structures.bdata[i][j][1][1]+data_f.boardheighttiles:
-                            # print(mouse)
-                            col=j
-                            row=i
-                            print(col,row)
-                            if len(clickarg)!=0 and tile==(col,row):
-                                tile=()
-                                clickarg=[]
-                            else:
-                                tile=(col,row)
-                                clickarg.append(tile)
-                            valid=False
-                            if len(clickarg)==1 and is_empty(data_structures.dice_roll)==False and top(data_structures.dice_roll)!='pass' and check_valid(clickarg[0])==True:
-                                valid=True
-                                print(clickarg)
+                print('mouse',mouse)
+                if get_colrows(mouse)!=-1:
+                    tile=get_colrows(mouse)
+                    clickarg.append(tile)
+                else:
+                    print('click on the knight!')
+                if len(clickarg)==1:
+                    if is_empty(data_structures.dice_roll)==False:
+                        if top(data_structures.dice_roll)!='pass':
+                            if check_valid(clickarg[0])==True:
+                                print('clickarg',clickarg)
                                 move(clickarg[0],top(data_structures.dice_roll))
                                 pop(data_structures.dice_roll)
+                                print('dice',data_structures.dice_roll)
+                                if is_empty(data_structures.dice_roll)==True:
+                                    print('your turn has ended')
+                                    valid=True
+
                             else:
-                                print('invalid')
-                            clickarg=[]
-                            if valid==True and is_empty(data_structures.dice_roll)==True:
-                                if n==3:
-                                    n=0
-                                else:
-                                    n+=1
-                                data_structures.defturn=turn(n)
-                                print(data_structures.defturn)
+                                print('Wrong Move!')
+                        else:
+                            print('your turn will be passed')
+                    else:
+                        print('roll dice')
+                clickarg=[]
+            if valid==True and is_empty(data_structures.dice_roll)==True:
+                print('playerturn',n)
+                if n==3:
+                    n=0
+                else:
+                    n+=1
+                    data_structures.defturn=turn(n)
+                    print('current turn',data_structures.defturn)
+                    valid=False
                     
         screen.fill(data_f.screencolor)
         gamestate()
         dicebutton, display =button('Roll Dice',50,50,100,50,data_f.boardred, 'dice')
         if dicebutton and display:
-            dice()
+            if len(data_structures.dice_roll)==1 and top(data_structures.dice_roll)!=6:
+                print('invalid')
+            else: 
+                dice()
             print(data_structures.dice_roll)
             count=0
             if top(data_structures.dice_roll)==6:
                 count=1
             while top(data_structures.dice_roll)==6 and count!=3:
                 dice()
-                count+=1
-                print(data_structures.dice_roll)
+                if top(data_structures.dice_roll)==6:
+                    count+=1
+                print('dice stack',data_structures.dice_roll)
             if count==3:
                 while is_empty(data_structures.dice_roll)==False:
                    pop(data_structures.dice_roll) 
                 data_structures.dice_roll.append('pass')
-            # else:
-                # mouse=pygame.mouse.get_pos()
-                # press=pygame.mouse.get_pressed()
-                # print(mouse)
-                # if press[0]==1:
-                #     for i in range(len(data_structures.bdata)):
-                #         for j in range(len(data_structures.bdata[0])):
-                #             if mouse[0]>data_structures.bdata[i][j][1][0] and mouse[0]<data_structures.bdata[i][j][1][0]+data_f.boardwidthtiles and mouse[1]>data_structures.bdata[i][j][1][1] and mouse[1]<data_structures.bdata[i][j][1][1]+data_f.boardheighttiles:
-                #                 # print(mouse)
-                #                 col=j
-                #                 row=i
-                #                 print(col,row)
-                #                 if tile==(col,row):
-                #                     tile=()
-                #                     clickarg=[]
-                #                 tile=(col,row)
-                #                 clickarg.append(tile)
-                #                 if len(clickarg)==2:
-                #                     print(clickarg)
-                #                     move(clickarg[0],clickarg[1])
-                #                     clickarg=[]
                 
         pygame.display.update()
         clock.tick(60)
@@ -109,6 +108,10 @@ def button(text,x,y,w,h,color,screentype,function=None):
     if mouse[0]>x and mouse[0]<x+w and mouse[1]>y and mouse[1]<y+h:
         pygame.draw.rect(screen,color,(x-12.5,y-12.5,w+25,h+25))
         if press[0]==1 and function==None and screentype == 'dice':
+            gtext= pygame.font.Font(data_f.textfont,data_f.textfsize)
+            start_text, start_textbox= texto(text, gtext)
+            start_textbox.center = ((x+(w/2)),(y+(h/2)))
+            screen.blit(start_text, start_textbox)    
             display = True
             return True, display
         elif press[0]==1 and function==None and screentype == 'menu':
@@ -145,6 +148,6 @@ def m():
     # if mainmenu()==True:
     game()
     # else:
-        # pygame.quit()
+    pygame.quit()
 if __name__=='__main__':
     m()

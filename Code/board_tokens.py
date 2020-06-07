@@ -65,9 +65,13 @@ def drawtoken():
     for i in range(len(b)):
         for j in range(len(b[0])):
             if len(b[i][j])>2:
-                t=b[i][j][:4]
-                if t in token:
-                    screen.blit(token[t],pygame.Rect((j*width)+data_f.boardstartx,(i*height)+data_f.boardstarty,height,width))
+                if '-' in b[i][j]:
+                    t2=b[i][j][5:9]
+                    if t1 in token:
+                        screen.blit(token[t1],pygame.Rect((j*width)+data_f.boardstartx,(i*height)+data_f.boardstarty,height,width))
+                t1=b[i][j][:4]
+                if t1 in token:
+                    screen.blit(token[t1],pygame.Rect((j*width)+data_f.boardstartx,(i*height)+data_f.boardstarty,height,width))
 def dice():
     count=0
     while count!=10:
@@ -102,58 +106,109 @@ def dice():
             pygame.draw.circle(screen,data_f.black,(data_f.diceposx+((data_f.dicewidth//2)-(data_f.dicewidth//4)),data_f.diceposy+(data_f.diceheight//2)-(data_f.diceheight//4)),8)
         count+=1
         pygame.time.delay(100)
+        pygame.display.update()
     data_structures.dice_roll.append(num)
-    pygame.time.delay(5000)
+    pygame.time.delay(500)   
 def check_valid(start):
     selectedtoken=b[start[0]][start[1]]
     if selectedtoken[:4]==data_structures.defturn:
         return True
     else:
         False
-def move(start,die):
-    tokinfo=()
-    selectedtoken=b[start[0]][start[1]]
-    # print(selectedtoken)
-    print(selectedtoken[:4],data_structures.defturn)
-    if selectedtoken[:4]==data_structures.defturn:
-        if len(selectedtoken)>2:
-            token=selectedtoken[3:5]
-            # print(token)
-            for i in data_structures.Players:
-                if i.get('playcolor')==data_structures.defturn:
-                    if i['tokens_on_track']==[]:
-                        for t in range(len(i['tokens_in_field'])):
-                            # print(i['tokens_in_field'][t])
-                            if i['tokens_in_field'][t][0]==token:
-                                pos=t
-                                tokinfo=i['tokens_in_field'][t]
-            
-                                
-                                # print(tokinfo)
-                                for s in data_structures.stops:
-                                    if len(s[1])>1 and s[1][0]==selectedtoken[3]:
-                                        track[s[0]].append(tokinfo)
-                                        temp=track[s[0]]
-                                        destination=b[temp[0][0]][temp[0][1]]
-                                        print(destination)
-                                        # print(b[t[1][0]][t[1][0]])
-                                        col=destination[-1]
-                                        if 's' in destination:
-                                            col+='s'+col
-                                        b[temp[0][0]][temp[0][1]]=selectedtoken[:4]+col
-                                        b[start[0]][start[1]]=selectedtoken[5:]
-                                        break
-                        i['tokens_on_track'].append(i['tokens_in_field'].pop(pos))
-                        print(i['tokens_on_track'])
-                        print(i['tokens_in_field'])
-                                
-                                    
+    
+def field_to_track(token):
+    for i in data_structures.Players:
+        if i.get('playcolor')==data_structures.defturn:
+                print('player',i['playcolor'])
+            # if i['tokens_in_field']!=[]:
+                for t in range(len(i['tokens_in_field'])):
+                    # print(i['tokens_in_field'][t])
+                    if i['tokens_in_field'][t][0]==token[0]:
+                        pos=t
+                        tokinfo=i['tokens_in_field'][t]
+                        print('tokinfo',tokinfo)
+                        for s in data_structures.stops:
+                            if len(s[1])>1 and s[1][0]==token[0][0]:
+                                print('stop')
+                                track[s[0]].append(tokinfo)
+                                temp=track[s[0]]
+                                print('temp',temp)
+                                destination=b[temp[0][0]][temp[0][1]]
+                                i['tokens_on_track'].append((i['tokens_in_field'].pop(pos),temp[0],s[0]))
+                                return (destination,temp[0])
+    return ('not in field')
+def in_track_move(token,dice):
+    for i in data_structures.Players:
+        if i.get('playcolor')==data_structures.defturn:
+                print('player',i['playcolor'])
+                for t in range(len(i['tokens_on_track'])):
+                    # print(i['tokens_on_track'][t])
+                    if i['tokens_on_track'][t][0]==token[0]:
+                        tokinfo=i['tokens_on_track'][t]
+                        print('tokinfo',tokinfo)
+                        circlst=t[2]+dice
+                        if tokinfo[2]!=47:
+                            track[circlst].append(tokinfo)
+                        else:
+                            circlst=0
+                            track[0].append(tokinfo)
+                        temp=track[t[2]+dice]
+                        print('temp',temp)
+                        destination=b[temp[0][0]][temp[0][1]]
+                        i['tokens_on_track'][t]=(i['tokens_on_track'][t][0],temp[0],circlst)
+                        return (destination,temp[0])
 
+def move(start,dice):
+    tokinfo=()
+    token=()
+    pos=()
+    selectedtoken=b[start[0]][start[1]]
+    print('selectedtoken',selectedtoken)
+    destination=[]
+    if len(selectedtoken)<2:
+        print('invalid')
+        pass
+    if '-' in selectedtoken:
+        plaspot((selectedtoken[:5],0))
+        for character in range(len(selectedtoken)):
+            if selectedtoken[character]=='-':
+                plaspot.append((selectedtoken[character+1:character+5],character))
+        else:
+            for ch in plaspot:
+                count=0
+                if ch[0]==data_structures.defturn:
+                    token=(ch[0][3:5],ch[1])
                     break
-            
+                else:
+                    count+=1
+            if count==len(plaspot):
+                pass
+    else:
+        if selectedtoken[:4]==data_structures.defturn:
+            print('valid selection')
+            token=(selectedtoken[3:5],'')
+            print('token',token)
         else:
             pass
-    else:
-        print('invalid move')
+            # print(token)
+    destination=field_to_track(token)
+    if destination=='not in field':
+        destination=in_track_move(token,dice)
+    if destination!=[]:
+        col=destination[0][-1]
+        if 's' in destination[0]:
+            col='s'+col
+            print('col',col)
+        if len(destination)>4:
+            if destination[:4]==selectedtoken[:5]:
+                b[destination[1][0]][destination[1][1]]=destination[:5]+'-'+selectedtoken[:5]+col
+                print('destination',b[destination[1][0]][destination[1][1]])
+        else:
+            b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
+        if '-' in selectedtoken:
+            b[start[0]][start[1]]=selectedtoken[:token[1]]+selectedtoken[token[1]+5:]
+        else:
+            b[start[0]][start[1]]=selectedtoken[5:]
+    # 
 
 

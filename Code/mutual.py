@@ -24,7 +24,7 @@ def maketrack():
     file.close()
     for i in r:
         s=i.split()
-        print(s)
+        # print(s)
         t.append([(int(s[0]),int(s[1]))])
     return t
 def turn(n):
