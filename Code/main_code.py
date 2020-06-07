@@ -29,10 +29,11 @@ def get_colrows(mouse):
 def game():
     loadtokens()
     tile=()
-    clickarg=[]  #stores original and final position of a token in each turn
+    clickarg=[]  #accept the player's input 
     clock=pygame.time.Clock() 
     running=True
     n=0
+    # the variables n and defturn are almost similarr. need to think of a way to simplify
     valid=False
     while running:
         for event in pygame.event.get(): #to quit the game
@@ -40,17 +41,18 @@ def game():
                 running=False
             elif event.type==pygame.MOUSEBUTTONDOWN: #if mouse clicked 
                 mouse=pygame.mouse.get_pos() #gets x and y coordinate of position of mouse click in tuple
-                press=pygame.mouse.get_pressed()
                 print('mouse',mouse)
                 if get_colrows(mouse)!=-1:
                     tile=get_colrows(mouse)
                     clickarg.append(tile)
+                    # extra variable tile maybe unnecessary
                 else:
                     print('click on the knight!')
                 if len(clickarg)==1:
                     if is_empty(data_structures.dice_roll)==False:
                         if top(data_structures.dice_roll)!='pass':
                             if check_valid(clickarg[0])==True:
+                                # may need to implement check wvalid everywhere
                                 print('clickarg',clickarg)
                                 move(clickarg[0],top(data_structures.dice_roll))
                                 pop(data_structures.dice_roll)
@@ -78,6 +80,7 @@ def game():
                     
         screen.fill(data_f.screencolor)
         gamestate()
+        # need to revise button function
         dicebutton, display =button('Roll Dice',50,50,100,50,data_f.boardred, 'dice')
         if dicebutton and display:
             if len(data_structures.dice_roll)==1 and top(data_structures.dice_roll)!=6:
@@ -101,6 +104,7 @@ def game():
         pygame.display.update()
         clock.tick(60)
 def button(text,x,y,w,h,color,screentype,function=None):
+    # the variable named function not needed and revise the button function
     mouse=pygame.mouse.get_pos()
     press=pygame.mouse.get_pressed()
     pygame.draw.rect(screen,color,(x,y,w,h))
@@ -145,7 +149,7 @@ def mainmenu():
         pygame.display.update()
 
 def m():
-    screen=startgame()
+    # mainmenu needs to be fixed
     # if mainmenu()==True:
     game()
     # else:

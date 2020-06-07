@@ -3,7 +3,7 @@ import data_f
 import data_structures
 from mutual import *
 import random
-
+# rename variables
 #for board and token related code
 token={}
 def colors(block): #adding color to board
@@ -120,7 +120,7 @@ def check_valid(start):
     
 def field_to_track(token):
     for i in data_structures.Players:
-        if i.get('playcolor')==data_structures.defturn:
+        if i['playcolor']==data_structures.defturn:
                 print('player',i['playcolor'])
             # if i['tokens_in_field']!=[]:
                 for t in range(len(i['tokens_in_field'])):
@@ -164,6 +164,7 @@ def move(start,dice):
     tokinfo=()
     token=()
     pos=()
+    plaspot=()
     selectedtoken=b[start[0]][start[1]]
     print('selectedtoken',selectedtoken)
     destination=[]
@@ -171,20 +172,24 @@ def move(start,dice):
         print('invalid')
         pass
     if '-' in selectedtoken:
-        plaspot((selectedtoken[:5],0))
+        plaspot.append((selectedtoken[:5],0))
         for character in range(len(selectedtoken)):
             if selectedtoken[character]=='-':
                 plaspot.append((selectedtoken[character+1:character+5],character))
-        else:
-            for ch in plaspot:
-                count=0
-                if ch[0]==data_structures.defturn:
-                    token=(ch[0][3:5],ch[1])
-                    break
-                else:
-                    count+=1
-            if count==len(plaspot):
-                pass
+        # plaspot is a nested tuple containing multiple tokens on a tile
+        for ch in plaspot:
+            # count is for to keep track if the selected place has the token of the player
+            # so it will run a loop. if it finds the player's token, then it will save it in the variable token and it will break
+            # else if the count is equal to the length of the tuple plaspot, it will pass
+            # need to make this part a function
+            count=0
+            if ch[0]==data_structures.defturn:
+                token=(ch[0][3:5],ch[1])
+                break
+            else:
+                count+=1
+        if count==len(plaspot):
+            pass
     else:
         if selectedtoken[:4]==data_structures.defturn:
             print('valid selection')
@@ -203,6 +208,7 @@ def move(start,dice):
             print('col',col)
         if len(destination)>4:
             if destination[:4]==selectedtoken[:5]:
+                # need to fix this
                 b[destination[1][0]][destination[1][1]]=destination[:5]+'-'+selectedtoken[:5]+col
                 print('destination',b[destination[1][0]][destination[1][1]])
         else:
@@ -210,7 +216,6 @@ def move(start,dice):
         if '-' in selectedtoken:
             b[start[0]][start[1]]=selectedtoken[:token[1]]+selectedtoken[token[1]+5:]
         else:
-            b[start[0]][start[1]]=selectedtoken[5:]
-    # 
+            b[start[0]][start[1]]=selectedtoken[5:] 
 
 
