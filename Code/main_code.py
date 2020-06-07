@@ -1,49 +1,50 @@
+#more files to keep clutter low in main file
 import pygame
 import random
 import data_f
 import data_structures
 import mutual
-from mutual import *
+from mutual import * 
 from board_tokens import *
 from data_structures import *
-def texto(text, font):
+def texto(text, font): #button text
     textS = font.render(text, True, data_f.black)
     return textS, textS.get_rect()
-def gamestate():
-    callboard()
-    separator()
-    drawtoken()
-def game():
-    loadtokens()
+def gamestate(): #shortens loop by calling these functions
+    callboard() #visually draws board
+    separator() # the lines/grid made on the board
+    drawtoken() # draws tokens in correct places
+def game(): #starts game
+    loadtokens() #calling from board_tokens file
     tile=()
-    clickarg=[]
+    clickarg=[]  #stores original and final position of a token in each turn
     clock=pygame.time.Clock() 
     running=True
     n=0
     while running:
-        for event in pygame.event.get():
+        for event in pygame.event.get(): #to quit the game
             if event.type==pygame.QUIT:
                 running=False
-            elif event.type==pygame.MOUSEBUTTONDOWN:
-                mouse=pygame.mouse.get_pos()
+            elif event.type==pygame.MOUSEBUTTONDOWN: #if mouse clicked 
+                mouse=pygame.mouse.get_pos() #gets x and y coordinate of position of mouse click in tuple
                 press=pygame.mouse.get_pressed()
                 print(mouse)
                 # if press[0]==1:
-                for i in range(len(data_structures.bdata)):
-                    for j in range(len(data_structures.bdata[0])):
-                        if mouse[0]>data_structures.bdata[i][j][1][0] and mouse[0]<data_structures.bdata[i][j][1][0]+data_f.boardwidthtiles and mouse[1]>data_structures.bdata[i][j][1][1] and mouse[1]<data_structures.bdata[i][j][1][1]+data_f.boardheighttiles:
+                for i in range(len(data_structures.bdata)): # for length of track??
+                    for j in range(len(data_structures.bdata[0])): #for length of tuple containing data of each tile
+                        if mouse[0]>data_structures.bdata[i][j][1][0] and mouse[0]<data_structures.bdata[i][j][1][0]+data_f.boardwidthtiles and mouse[1]>data_structures.bdata[i][j][1][1] and mouse[1]<data_structures.bdata[i][j][1][1]+data_f.boardheighttiles: #if mouse click is within certain boundaries...?
                             # print(mouse)
                             col=j
                             row=i
                             print(col,row)
-                            if len(clickarg)!=0 and tile==(col,row):
+                            if len(clickarg)!=0 and tile==(col,row): #if that col and row had already been clicked then undo
                                 tile=()
                                 clickarg=[]
                             else:
                                 tile=(col,row)
                                 clickarg.append(tile)
                             valid=False
-                            if len(clickarg)==1 and is_empty(data_structures.dice_roll)==False and top(data_structures.dice_roll)!='pass' and check_valid(clickarg[0])==True:
+                            if len(clickarg)==1 and is_empty(data_structures.dice_roll)==False and top(data_structures.dice_roll)!='pass' and check_valid(clickarg[0])==True: #???
                                 valid=True
                                 print(clickarg)
                                 move(clickarg[0],top(data_structures.dice_roll))
@@ -51,7 +52,7 @@ def game():
                             else:
                                 print('invalid')
                             clickarg=[]
-                            if valid==True and is_empty(data_structures.dice_roll)==True:
+                            if valid==True and is_empty(data_structures.dice_roll)==True: # ???
                                 if n==3:
                                     n=0
                                 else:
@@ -62,7 +63,7 @@ def game():
         screen.fill(data_f.screencolor)
         gamestate()
         dicebutton, display =button('Roll Dice',50,50,100,50,data_f.boardred, 'dice')
-        if dicebutton and display:
+        if dicebutton and display: #takes care of dice rolls
             dice()
             print(data_structures.dice_roll)
             count=0

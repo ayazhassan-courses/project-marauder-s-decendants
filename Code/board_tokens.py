@@ -3,6 +3,8 @@ import data_f
 import data_structures
 from mutual import *
 import random
+
+#for board and token related code
 token={}
 def colors(block):
     if block[0]=='r':
@@ -45,8 +47,8 @@ def separator():
         w=i*width
         pygame.draw.line(screen,data_f.screencolor,(data_f.boardstartx+w,data_f.boardstarty),(data_f.boardstartx+w,data_f.boardstarty+data_f.boardheight),2)
         pygame.draw.line(screen,data_f.screencolor,(data_f.boardstartx,h+data_f.boardstarty),(data_f.boardstartx+data_f.boardwidth,h+data_f.boardstarty),2)
-def loadtokens():
-    t=['plar','plab','plag','play']
+def loadtokens(): #loading token images into dictionary called token
+    t=['plar','plab','plag','play'] #pla (= player) + r/b/g/y (for color)
     for i in t:
         if i=='plar':
             token[i]=pygame.transform.scale(pygame.image.load(data_f.red_token),(data_f.boardwidthtiles,data_f.boardheighttiles))
