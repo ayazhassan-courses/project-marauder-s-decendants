@@ -1,13 +1,14 @@
 import pygame
 import data_f
-def startgame():
+#Stores functions used in multiple files for easy access and prevent circular dependency
+def startgame(): #starts game
     pygame.init()
     screen=pygame.display.set_mode((data_f.screenwidth,data_f.screenheight))
     pygame.display.set_caption(data_f.title)
     Icon=pygame.image.load(data_f.logo)
     pygame.display.set_icon(Icon)
     return screen
-def makeboard():
+def makeboard(): #makes the board
     board=[]
     file = open('board.txt', 'r')
     f=file.read()

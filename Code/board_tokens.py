@@ -6,7 +6,7 @@ import random
 
 #for board and token related code
 token={}
-def colors(block):
+def colors(block): #adding color to board
     if block[0]=='r':
         c=data_f.boardred
     elif block[0]=='b':
@@ -20,7 +20,7 @@ def colors(block):
     else:
         c=data_f.white
     return c
-def callboard():
+def callboard(): #visually draws board
     width=data_f.boardwidthtiles
     height=data_f.boardheighttiles
     for i in range(len(b)):
@@ -61,7 +61,7 @@ def loadtokens(): #loading token images into dictionary called token
 
         if i=='play':
             token[i]=pygame.transform.scale(pygame.image.load(data_f.yellow_token),(data_f.boardwidthtiles,data_f.boardheighttiles))
-def drawtoken():
+def drawtoken(): #reads board and draws token where 'plar' etc are
     width=data_f.boardwidthtiles
     height=data_f.boardheighttiles
     for i in range(len(b)):
@@ -106,7 +106,7 @@ def dice():
         pygame.time.delay(100)
     data_structures.dice_roll.append(num)
     pygame.time.delay(5000)
-def check_valid(start):
+def check_valid(start): #??
     selectedtoken=b[start[0]][start[1]]
     if selectedtoken[:4]==data_structures.defturn:
         return True
