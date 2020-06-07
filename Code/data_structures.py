@@ -14,7 +14,7 @@ def is_empty(lst):
 bdata=[]
 defturn='plar'
 board=makeboard()
-for i in range(len(board)):
+for i in range(len(board)): #storing token color and coordinates (x,y) in tuple
     t=[]
     for j in range(len(board[0])):
         t.append((board[i][j],(data_f.boardstartx+(i*data_f.boardwidthtiles),data_f.boardstarty+(j*data_f.boardheighttiles))))

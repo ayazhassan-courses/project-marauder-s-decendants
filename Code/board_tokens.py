@@ -3,8 +3,10 @@ import data_f
 import data_structures
 from mutual import *
 import random
+
+#for board and token related code
 token={}
-def colors(block):
+def colors(block): #adding color to board
     if block[0]=='r':
         c=data_f.boardred
     elif block[0]=='b':
@@ -18,7 +20,7 @@ def colors(block):
     else:
         c=data_f.white
     return c
-def callboard():
+def callboard(): #visually draws board
     width=data_f.boardwidthtiles
     height=data_f.boardheighttiles
     for i in range(len(b)):
@@ -45,8 +47,8 @@ def separator():
         w=i*width
         pygame.draw.line(screen,data_f.screencolor,(data_f.boardstartx+w,data_f.boardstarty),(data_f.boardstartx+w,data_f.boardstarty+data_f.boardheight),2)
         pygame.draw.line(screen,data_f.screencolor,(data_f.boardstartx,h+data_f.boardstarty),(data_f.boardstartx+data_f.boardwidth,h+data_f.boardstarty),2)
-def loadtokens():
-    t=['plar','plab','plag','play']
+def loadtokens(): #loading token images into dictionary called token
+    t=['plar','plab','plag','play'] #pla (= player) + r/b/g/y (for color)
     for i in t:
         if i=='plar':
             token[i]=pygame.transform.scale(pygame.image.load(data_f.red_token),(data_f.boardwidthtiles,data_f.boardheighttiles))
@@ -59,7 +61,7 @@ def loadtokens():
 
         if i=='play':
             token[i]=pygame.transform.scale(pygame.image.load(data_f.yellow_token),(data_f.boardwidthtiles,data_f.boardheighttiles))
-def drawtoken():
+def drawtoken(): #reads board and draws token where 'plar' etc are
     width=data_f.boardwidthtiles
     height=data_f.boardheighttiles
     for i in range(len(b)):

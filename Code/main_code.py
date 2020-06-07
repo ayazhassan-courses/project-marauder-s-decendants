@@ -1,12 +1,13 @@
+#more files to keep clutter low in main file
 import pygame
 import random
 import data_f
 import data_structures
 import mutual
-from mutual import *
+from mutual import * 
 from board_tokens import *
 from data_structures import *
-def texto(text, font):
+def texto(text, font): #button text
     textS = font.render(text, True, data_f.black)
     return textS, textS.get_rect()
 def gamestate():
@@ -28,17 +29,17 @@ def get_colrows(mouse):
 def game():
     loadtokens()
     tile=()
-    clickarg=[]
+    clickarg=[]  #stores original and final position of a token in each turn
     clock=pygame.time.Clock() 
     running=True
     n=0
     valid=False
     while running:
-        for event in pygame.event.get():
+        for event in pygame.event.get(): #to quit the game
             if event.type==pygame.QUIT:
                 running=False
-            elif event.type==pygame.MOUSEBUTTONDOWN:
-                mouse=pygame.mouse.get_pos()
+            elif event.type==pygame.MOUSEBUTTONDOWN: #if mouse clicked 
+                mouse=pygame.mouse.get_pos() #gets x and y coordinate of position of mouse click in tuple
                 press=pygame.mouse.get_pressed()
                 print('mouse',mouse)
                 if get_colrows(mouse)!=-1:
