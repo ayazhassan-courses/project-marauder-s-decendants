@@ -177,7 +177,7 @@ def move(start,dice):
             if selectedtoken[character]=='-':
                 plaspot.append((selectedtoken[character+1:character+5],character))
         # plaspot is a nested tuple containing multiple tokens on a tile
-        for ch in plaspot:
+        for ch in plaspot: #nested tuple
             # count is for to keep track if the selected place has the token of the player
             # so it will run a loop. if it finds the player's token, then it will save it in the variable token and it will break
             # else if the count is equal to the length of the tuple plaspot, it will pass

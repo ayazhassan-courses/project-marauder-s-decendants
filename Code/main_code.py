@@ -42,13 +42,13 @@ def game():
             elif event.type==pygame.MOUSEBUTTONDOWN: #if mouse clicked 
                 mouse=pygame.mouse.get_pos() #gets x and y coordinate of position of mouse click in tuple
                 print('mouse',mouse)
-                if get_colrows(mouse)!=-1:
+                if get_colrows(mouse)!=-1: #checks if either board is clicked or the knight needs to be confirmed with ifrah
                     tile=get_colrows(mouse)
                     clickarg.append(tile)
                     # extra variable tile maybe unnecessary
                 else:
                     print('click on the knight!')
-                if len(clickarg)==1:
+                if len(clickarg)==1: #clickarg will either have 1 or no value in the form of tile
                     if is_empty(data_structures.dice_roll)==False:
                         if top(data_structures.dice_roll)!='pass':
                             if check_valid(clickarg[0])==True:
@@ -72,10 +72,21 @@ def game():
                 print('playerturn',n)
                 if n==3:
                     n=0
+                    data_structures.defturn=turn(n)
+                    if data_structures.defturn == 'plar':
+                        print("Player RED's turn")
+                    valid = False
                 else:
                     n+=1
                     data_structures.defturn=turn(n)
-                    print('current turn',data_structures.defturn)
+                    # if data_structures.defturn == 'plar':
+                    #     print("Player RED's turn")
+                    if data_structures.defturn == 'plab':
+                        print("Player BLUE's turn")
+                    elif data_structures.defturn == 'plag':
+                        print("Player GREEN's turn")
+                    elif data_structures.defturn == 'play':
+                        print("Player YELLOW's turn")
                     valid=False
                     
         screen.fill(data_f.screencolor)
@@ -88,18 +99,18 @@ def game():
             else: 
                 dice()
             print(data_structures.dice_roll)
-            count=0
+            six_count=0
             if top(data_structures.dice_roll)==6:
-                count=1
-            while top(data_structures.dice_roll)==6 and count!=3:
+                six_count=1
+            while top(data_structures.dice_roll)==6 and six_count!=3:
                 dice()
                 if top(data_structures.dice_roll)==6:
-                    count+=1
+                    six_count+=1
                 print('dice stack',data_structures.dice_roll)
-            if count==3:
+            if six_count==3:
                 while is_empty(data_structures.dice_roll)==False:
                    pop(data_structures.dice_roll) 
-                data_structures.dice_roll.append('pass')
+                data_structures.dice_roll.append('you got 3 sixes, your turn will be passed')
                 
         pygame.display.update()
         clock.tick(60)

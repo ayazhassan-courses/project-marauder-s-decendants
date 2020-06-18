@@ -20,7 +20,7 @@ for i in range(len(board)): #storing token color and coordinates (x,y) in tuple
         t.append((board[i][j],(data_f.boardstartx+(i*data_f.boardwidthtiles),data_f.boardstarty+(j*data_f.boardheighttiles))))
     bdata.append(t)
 # print (track)
-
+# print(bdata)
 #dictionaries for each player
 # p1_1 = 0
 # p1_2 = 0

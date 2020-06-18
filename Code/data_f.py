@@ -20,12 +20,12 @@ white=(255,255,255)
 purered=(255,0,0)
 puregreen=(0,255,0)
 pureblue=(0,0,255)
-screencolor=(247,206,215)
+screencolor=(253,245,230)
 
 boardred=(223,101,129)
 boardgreen=(106,222,171)
 boardblue=(106,110,219)
-boardyellow=(255,233,162)
+boardyellow=(255,233,102)
 boardpath=(229,233,240)
 # elements
 safepoint='images\signs.png'
