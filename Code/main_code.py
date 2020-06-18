@@ -50,7 +50,7 @@ def game():
                     print('click on the knight!')
                 if len(clickarg)==1: #clickarg will either have 1 or no value in the form of tile
                     if is_empty(data_structures.dice_roll)==False:
-                        if top(data_structures.dice_roll)!='pass':
+                        if top(data_structures.dice_roll)!='you got 3 sixes, your turn will be passed':
                             if check_valid(clickarg[0])==True:
                                 # may need to implement check wvalid everywhere
                                 print('clickarg',clickarg)
@@ -79,8 +79,6 @@ def game():
                 else:
                     n+=1
                     data_structures.defturn=turn(n)
-                    # if data_structures.defturn == 'plar':
-                    #     print("Player RED's turn")
                     if data_structures.defturn == 'plab':
                         print("Player BLUE's turn")
                     elif data_structures.defturn == 'plag':

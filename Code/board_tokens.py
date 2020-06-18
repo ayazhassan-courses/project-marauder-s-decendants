@@ -47,7 +47,7 @@ def separator():
         w=i*width
         pygame.draw.line(screen,data_f.screencolor,(data_f.boardstartx+w,data_f.boardstarty),(data_f.boardstartx+w,data_f.boardstarty+data_f.boardheight),2)
         pygame.draw.line(screen,data_f.screencolor,(data_f.boardstartx,h+data_f.boardstarty),(data_f.boardstartx+data_f.boardwidth,h+data_f.boardstarty),2)
-def loadtokens(): #loading token images into dictionary called token
+def loadtokens(): #loading token images into dictionary called token                 #use this to fix the multiple tokens on one spot maybe
     t=['plar','plab','plag','play'] #pla (= player) + r/b/g/y (for color)
     for i in t:
         if i=='plar':
@@ -61,16 +61,16 @@ def loadtokens(): #loading token images into dictionary called token
 
         if i=='play':
             token[i]=pygame.transform.scale(pygame.image.load(data_f.yellow_token),(data_f.boardwidthtiles,data_f.boardheighttiles))
-def drawtoken(): #reads board and draws token where 'plar' etc are
+def drawtoken(): #reads board and draws token where 'plar' etc are             #use this to fix the multiple tokens on one spot maybe
     width=data_f.boardwidthtiles
     height=data_f.boardheighttiles
     for i in range(len(b)):
         for j in range(len(b[0])):
             if len(b[i][j])>2:
                 if '-' in b[i][j]:
-                    t2=b[i][j][5:9]
+                    t2=b[i][j][5:9] #the other token
                     if t1 in token:
-                        screen.blit(token[t1],pygame.Rect((j*width)+data_f.boardstartx,(i*height)+data_f.boardstarty,height,width))
+                        screen.blit(token[t1],pygame.Rect((j*width)+data_f.boardstartx,(i*height)+data_f.boardstarty,height,width)) #play with this to handle multiple token on one spot
                 t1=b[i][j][:4]
                 if t1 in token:
                     screen.blit(token[t1],pygame.Rect((j*width)+data_f.boardstartx,(i*height)+data_f.boardstarty,height,width))
@@ -132,37 +132,37 @@ def field_to_track(token):
                         for s in data_structures.stops:
                             if len(s[1])>1 and s[1][0]==token[0][0]:
                                 print('stop')
-                                track[s[0]].append(tokinfo)
-                                temp=track[s[0]]
+                                track[s[0]].append(tokinfo) #tokinfo contains what token it is and its original position
+                                temp=track[s[0]] #temp has all the information of the tile. temp[0] has the coordinates of the tile. s[0] is the tile number which is a stop
                                 print('temp',temp)
                                 destination=b[temp[0][0]][temp[0][1]]
-                                i['tokens_on_track'].append((i['tokens_in_field'].pop(pos),temp[0],s[0]))
+                                i['tokens_on_track'].append((i['tokens_in_field'].pop(pos),temp[0],s[0])) 
                                 return (destination,temp[0])
     return ('not in field')
-def in_track_move(token,dice):
+def in_track_move(token,dice): #need to make changes
     for i in data_structures.Players:
-        if i.get('playcolor')==data_structures.defturn:
+        # if i.get('playcolor')==data_structures.defturn:
+        if i['playcolor']==data_structures.defturn:
                 print('player',i['playcolor'])
                 for t in range(len(i['tokens_on_track'])):
-                    # print(i['tokens_on_track'][t])
-                    if i['tokens_on_track'][t][0]==token[0]:
+                    if i['tokens_on_track'][t][0][0]==token[0]:
                         tokinfo=i['tokens_on_track'][t]
                         print('tokinfo',tokinfo)
-                        circlst=t[2]+dice
+                        circlst=tokinfo[2]+dice
                         if tokinfo[2]!=47:
-                            track[circlst].append(tokinfo)
+                            track[circlst].append(tokinfo) #error caught
                         else:
                             circlst=0
                             track[0].append(tokinfo)
-                        temp=track[t[2]+dice]
-                        print('temp',temp)
+                        temp=track[tokinfo[2]+dice]
+                        print('temp hopeful',temp)
                         destination=b[temp[0][0]][temp[0][1]]
                         i['tokens_on_track'][t]=(i['tokens_on_track'][t][0],temp[0],circlst)
                         return (destination,temp[0])
 
 def move(start,dice):
     tokinfo=()
-    token=()
+    token=() #first argument is the colour and the number of the token, second is the position in the selectedtoken 
     pos=()
     plaspot=()
     selectedtoken=b[start[0]][start[1]]
@@ -171,26 +171,26 @@ def move(start,dice):
     if len(selectedtoken)<2:
         print('invalid')
         pass
-    if '-' in selectedtoken:
-        plaspot.append((selectedtoken[:5],0))
+    if '-' in selectedtoken: #there is a chance of multiple tokens
+        plaspot.append((selectedtoken[:5],0)) #first token is saved in plaspot
         for character in range(len(selectedtoken)):
-            if selectedtoken[character]=='-':
+            if selectedtoken[character]=='-': #if more than one token is present, they will be identified and stored in plaspot too
                 plaspot.append((selectedtoken[character+1:character+5],character))
         # plaspot is a nested tuple containing multiple tokens on a tile
-        for ch in plaspot: #nested tuple
+        for ch in plaspot: #nested tuple 
             # count is for to keep track if the selected place has the token of the player
             # so it will run a loop. if it finds the player's token, then it will save it in the variable token and it will break
             # else if the count is equal to the length of the tuple plaspot, it will pass
             # need to make this part a function
             count=0
-            if ch[0]==data_structures.defturn:
+            if ch[0]==data_structures.defturn: #to be checked
                 token=(ch[0][3:5],ch[1])
                 break
             else:
                 count+=1
         if count==len(plaspot):
             pass
-    else:
+    else: #only one token 
         if selectedtoken[:4]==data_structures.defturn:
             print('valid selection')
             token=(selectedtoken[3:5],'')
@@ -199,18 +199,21 @@ def move(start,dice):
             pass
             # print(token)
     destination=field_to_track(token)
-    if destination=='not in field':
+    if destination=='not in field': 
+        print('not in field') #nothing returned here
         destination=in_track_move(token,dice)
-    if destination!=[]:
-        col=destination[0][-1]
-        if 's' in destination[0]:
+        print(' we are checking for destination', destination)
+    if destination!=[]: #swapping of token
+        col=destination[0][-1] #detecting error here 
+        if 's' in destination[0]: #star position
             col='s'+col
             print('col',col)
-        if len(destination)>4:
+        if len(destination)>4: #checking here for any other token
             if destination[:4]==selectedtoken[:5]:
                 # need to fix this
-                b[destination[1][0]][destination[1][1]]=destination[:5]+'-'+selectedtoken[:5]+col
+                b[destination[1][0]][destination[1][1]]=destination[:5]+'-'+selectedtoken[:5]+col #not sure about the col position
                 print('destination',b[destination[1][0]][destination[1][1]])
+            #else statement from hana's code: outset, this is where the token will be killed and removed from the track    
         else:
             b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
         if '-' in selectedtoken:
