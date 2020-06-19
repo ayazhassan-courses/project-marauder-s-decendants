@@ -164,7 +164,7 @@ def in_track_move(token,dice): #need to make changes
                         else:
                             circlst=0
                             track[0].append(tokinfo)
-                        temp=track[tokinfo[2]+dice]
+                        temp=track[tokinfo[2]+dice] #check if this is working/updating this for the tokens
                         print('temp hopeful',temp)
                         destination=b[temp[0][0]][temp[0][1]]
                         i['tokens_on_track'][t]=(i['tokens_on_track'][t][0],temp[0],circlst)

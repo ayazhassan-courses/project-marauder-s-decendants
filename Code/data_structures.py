@@ -112,19 +112,65 @@ def exceeds_track_length(spaces, tile_no):
     else:
         return False
 
-def new_position(player,pos,spaces):
+def new_position(player,pos,spaces): #dont need it as of the moment
     if player != P1 and pos + spaces > 46: #checking if track list index is exceeded
         new_pos = (pos+spaces)-46 #bring token to beginning of list again
     else:
         new_pos = pos + spaces
     return new_pos
+def removetoken(remtok):
+    for i in data_structures.Players:
+        if i['playcolor'][3]==remtok[0][0][0]:
+            for tokintrack in range(len(i['tokens_on_track'])):
+                if i['tokens_on_track'][tokintrack]==remtok[0]:
+                    i['tokens_on_track'][tokintrack][2]=0
+                    i['tokens_in_field'].append(i['tokens_on_track'].pop(tokintrack))
 
-def oust(player,new_pos,track):
-    if track[new_pos] != []:
-        for i in track[new_pos]:
-            if i not in player['tokens_on_track']:
-                track[new_pos].remove(i)
-                player['ousted'] == True
+def oust(destination,temp,token):
+    for i in data_structures.Players:
+        if i['playcolor']==data_structures.defturn:
+            player=i
+    if len(temp)>2:
+        for i in range(1,len(temp)):
+            if temp[i][0]==token[0]:
+                comingtok=temp[i][0]
+                if 's' not in destination:
+                    for j in range(1,len(temp)):
+                        if temp[j][0][0]!=token[0][0]:
+                            for tile in track:
+                                if tile==temp:
+                                    tile.remove(temp[j])
+                                    removetoken(temp[j])
+                            player['ousted'] == True
+                            return True
+    return False
+        # if track[new_pos] != []:
+            # for i in track[new_pos]:
+            #     if i not in player['tokens_on_track']:
+def checkhomelane(token,temp):
+    for i in data_structures.Players:
+        if i['playcolor']==data_structures.defturn:
+            player=i
+    for i in range(1,len(temp)):
+        if temp[i][0][0]==token[0][0]:
+            if temp[i][2]==46 and player['ousted']==True:
+                for tile in track:
+                    if tile==temp:
+                        player['home'].append(tile.pop(i))
+                        break
+                break
+def reachedhome(token):
+    for i in data_structures.Players:
+        if i['playcolor']==data_structures.defturn:
+            player=i
+            player['tokens_won']+=1
+def plawon(token):
+    for i in data_structures.Players:
+        if i['playcolor']==data_structures.defturn:
+            player=i
+            if player['tokens_won']==4:
+                print('player '+token[0][0]+' won!')
+
 
 # def move_token(player, spaces, track):   
 #     if len(player['tokens_on_track']) == 1: 
