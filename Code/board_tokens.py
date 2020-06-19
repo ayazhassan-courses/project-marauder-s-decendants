@@ -1,6 +1,7 @@
 import pygame
 import data_f
 import data_structures
+from data_structures import *
 from mutual import *
 import random
 # rename variables
@@ -145,30 +146,44 @@ def field_to_track(token):
                                 print('temp',temp)
                                 destination=b[temp[0][0]][temp[0][1]]
                                 i['tokens_on_track'].append((i['tokens_in_field'].pop(pos),temp[0],s[0])) 
-                                return (destination,temp[0])
+                                print('when it moves field to track, tokens in track becomes',i['tokens_on_track'])
+                                return (destination,temp[0],temp)
     return ('not in field')
 def in_track_move(token,dice): #need to make changes
     for i in data_structures.Players:
-        # if i.get('playcolor')==data_structures.defturn:
+        # find the token which was selected in the dict
         if i['playcolor']==data_structures.defturn:
                 print('player',i['playcolor'])
+                # if u found the player dict, than search for it in token on track
                 for t in range(len(i['tokens_on_track'])):
-                    # print('tokens on track',i['tokens_on_track'][t][0][0])
-                    # print('token',token[0])
+                    # if the color and number match then store the info of the token in tokinfo
+                    # circlist updates the tile number
                     if i['tokens_on_track'][t][0][0]==token[0]:
                         tokinfo=i['tokens_on_track'][t]
                         print('tokinfo',tokinfo)
                         circlst=tokinfo[2]+dice
-                        if tokinfo[2]!=47:
-                            track[circlst].append(tokinfo) #error caught
+                        if circlst<47:
+                            track[circlst].append(tokinfo) #error fixed
                         else:
                             circlst=0
                             track[0].append(tokinfo)
-                        temp=track[tokinfo[2]+dice] #check if this is working/updating this for the tokens
+                        temp=track[tokinfo[2]+dice] 
                         print('temp hopeful',temp)
                         destination=b[temp[0][0]][temp[0][1]]
-                        i['tokens_on_track'][t]=(i['tokens_on_track'][t][0],temp[0],circlst)
-                        return (destination,temp[0])
+                        # home=checkhomelane(token,temp)
+                        if i['tokens_on_track'][t][0][2]+dice<46 #or home==False:
+                            i['tokens_on_track'][t]=(i['tokens_on_track'][t][0][0],i['tokens_on_track'][t][0][1],i['tokens_on_track'][t][0][2]+dice)
+                            i['tokens_on_track'][t]=(i['tokens_on_track'][t],temp[0],circlst)
+                        # else:
+                        #     return towardshome(token,dice,tokinfo)
+                        return (destination,temp[0],temp)
+
+# def towardshome(token,dice,tokinfo):
+#     for i in data_structures.homelanes:
+#         if i[0]==token[0][0]:
+#             homestart=i[1][0]
+#             homefin=i[1][1]
+            
 
 def move(start,dice):
     tokinfo=()
@@ -220,18 +235,21 @@ def move(start,dice):
         if 's' in destination[0]: #star position
             col='s'+col
             print('col',col)
-        if len(destination[0])>4: #checking here for any other token
-            # print('multiple tokens',destination[0][:4])
-            # print('the token selected',selectedtoken[:4])
-            if destination[0][:4]==selectedtoken[:4] or 's' in col:
+        if len(destination[0])>4:
+            ous=oust(destination[0],destination[2],token)
+            if ous == False:
+            # if destination[0][:4]==selectedtoken[:4] or 's' in col:
                 # need to fix this
-                b[destination[1][0]][destination[1][1]]=destination[0][:5]+'-'+selectedtoken[:5]+col #not sure about the col position
-                # print('changed destination',b[destination[1][0]][destination[1][1]])
+                b[destination[1][0]][destination[1][1]]=destination[0][:-2]+'-'+selectedtoken[:5]+col #not sure about the col position
+                print('changed destination',b[destination[1][0]][destination[1][1]])
+            else:
+                b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
             #else statement from hana's code: outset, this is where the token will be killed and removed from the track    
         else:
             b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
         if '-' in selectedtoken:
-            b[start[0]][start[1]]=selectedtoken[:token[1]]+selectedtoken[token[1]+5:]
+            print('merging',selectedtoken[:token[1]],'and',selectedtoken[token[1]+6:])
+            b[start[0]][start[1]]=selectedtoken[:token[1]]+selectedtoken[token[1]+6:]
         else:
             b[start[0]][start[1]]=selectedtoken[5:] 
 

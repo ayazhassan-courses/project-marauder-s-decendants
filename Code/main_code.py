@@ -62,7 +62,7 @@ def game():
                                     valid=True
 
                             else:
-                                print('Wrong Move!')
+                                print('Wrong Move!',b[clickarg[0][0]][clickarg[0][1]])
                         else:
                             print('your turn will be passed')
                     else:
