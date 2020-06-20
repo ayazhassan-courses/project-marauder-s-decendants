@@ -118,7 +118,7 @@ def dice():
         count+=1
         pygame.time.delay(100)
         pygame.display.update()
-    data_structures.dice_roll.append(num)
+    push(data_structures.dice_roll, num)
     pygame.time.delay(500)   
 def check_valid(start):
     plaspot=[]
