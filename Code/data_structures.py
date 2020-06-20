@@ -119,30 +119,45 @@ oust someone already there unless stop
 #     else:
 #         new_pos = pos + spaces
 #     return new_pos
-def removetoken(remtok):
+def removetoken(remtok,trackpos):
     for i in Players:
+        print('oust token',remtok)
+        print('checking color wth',i['playcolor'][3],remtok[0][0][0])
         if i['playcolor'][3]==remtok[0][0][0]:
             for tokintrack in range(len(i['tokens_on_track'])):
-                if i['tokens_on_track'][tokintrack]==remtok[0]:
-                    i['tokens_on_track'][tokintrack][2]=0
-                    i['tokens_in_field'].append(i['tokens_on_track'].pop(tokintrack))
-
+                print('checking track',i['tokens_on_track'][tokintrack][0][0],'to find',remtok[0][0])
+                if i['tokens_on_track'][tokintrack][0][0]==remtok[0][0]:
+                    i['tokens_on_track'][tokintrack]=((i['tokens_on_track'][tokintrack][0][0],i['tokens_on_track'][tokintrack][0][1],0),i['tokens_on_track'][tokintrack][1],0)
+                    sendback=i['tokens_on_track'].pop(tokintrack)
+                    i['tokens_in_field'].append(sendback[0])
+                    print('sending back to field',sendback[0])
+                    col=b[remtok[0][1][0]][remtok[0][1][1]][-1]
+                    print('tile color',col)
+                    b[remtok[0][1][0]][remtok[0][1][1]]='pla'+remtok[0][0]+col
+                    print('field is now',b[remtok[0][1][0]][remtok[0][1][1]])
+                    break
+            for tra in track:
+                if tra[0]==trackpos:
+                    print('remove',remtok,'from',tra)
+                    tra.remove(remtok)
+                    break
 def oust(destination,temp,token):
     for i in Players:
         if i['playcolor']==defturn:
             player=i
     if len(temp)>2:
         for i in range(1,len(temp)):
-            if temp[i][0]==token[0]:
+            print('the token we are checking for oust',temp[i][0])
+            if temp[i][0][0]==token[0]:
                 comingtok=temp[i][0]
+                print(comingtok)
                 if 's' not in destination:
                     for j in range(1,len(temp)):
-                        if temp[j][0][0]!=token[0][0]:
-                            for tile in track:
-                                if tile==temp:
-                                    tile.remove(temp[j])
-                                    removetoken(temp[j])
-                            player['ousted'] == True
+                        if temp[j][0][0][0][0]!=comingtok[0][0]:
+                            print('this will be ousted (temp[j])',temp[j][0][0][0][0],'by',comingtok[0][0],temp)
+                            print(temp[j])
+                            removetoken(temp[j],temp[0])
+                            player['ousted'] = True
                             return True
     return False
         # if track[new_pos] != []:

@@ -159,31 +159,49 @@ def in_track_move(token,dice): #need to make changes
                     # if the color and number match then store the info of the token in tokinfo
                     # circlist updates the tile number
                     if i['tokens_on_track'][t][0][0]==token[0]:
-                        tokinfo=i['tokens_on_track'][t]
-                        print('tokinfo',tokinfo)
-                        circlst=tokinfo[2]+dice
-                        if circlst<47:
-                            track[circlst].append(tokinfo) #error fixed
-                        else:
-                            circlst=0
-                            track[0].append(tokinfo)
-                        temp=track[tokinfo[2]+dice] 
-                        print('temp hopeful',temp)
-                        destination=b[temp[0][0]][temp[0][1]]
-                        # home=checkhomelane(token,temp)
-                        if i['tokens_on_track'][t][0][2]+dice<46 #or home==False:
+                            tokinfo=i['tokens_on_track'][t]
+                            print('tokinfo',tokinfo)
+                            circlst=tokinfo[2]
+                            for d in range(dice):
+                                    print('the number',d,'the dice',dice)
+                                    circlst+=1
+                                    print('updating circlst',circlst)
+                                    if circlst>=48:
+                                        # track[circlst].append(tokinfo) #error fixed
+                                        circlst=0
+                                    if i['tokens_on_track'][t][0][2]+d+1==46: 
+                                        h=towardshome(token,dice-d,track[circlst][0])
+                                        print('home token',h)
+                                        return h
+                            track[circlst].append(tokinfo) 
+                            temp=track[circlst]
+                            print('temp hopeful',temp) 
+                            destination=b[temp[0][0]][temp[0][1]]
                             i['tokens_on_track'][t]=(i['tokens_on_track'][t][0][0],i['tokens_on_track'][t][0][1],i['tokens_on_track'][t][0][2]+dice)
                             i['tokens_on_track'][t]=(i['tokens_on_track'][t],temp[0],circlst)
-                        # else:
-                        #     return towardshome(token,dice,tokinfo)
-                        return (destination,temp[0],temp)
+                            return (destination,temp[0],temp)
 
-# def towardshome(token,dice,tokinfo):
-#     for i in data_structures.homelanes:
-#         if i[0]==token[0][0]:
-#             homestart=i[1][0]
-#             homefin=i[1][1]
-            
+def towardshome(token,dice,loc):
+    destination=()
+    temp=()
+    for i in data_structures.homelanes:
+        if i[0]==token[0][0]:
+            homestart=i[1][0]
+            homefin=i[1][1]
+            if homestart[0]==homefin[0]:
+                if homestart[1]<homefin[1]:
+                    temp=(loc[0],loc[1]+dice)
+                else:
+                    temp=(loc[0],loc[1]-dice)
+            else:
+                if homestart[0]<homefin[0]:
+                    temp=(loc[0]+dice,loc[1])
+                else:
+                    temp=(loc[0]-dice,loc[1])
+            destination=b[temp[0]][temp[1]]
+            info=i['home']
+            return (destination,temp,info)
+
 
 def move(start,dice):
     tokinfo=()
@@ -244,11 +262,11 @@ def move(start,dice):
                 print('changed destination',b[destination[1][0]][destination[1][1]])
             else:
                 b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
+                print('token ousted',b[destination[1][0]][destination[1][1]])
             #else statement from hana's code: outset, this is where the token will be killed and removed from the track    
         else:
             b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
         if '-' in selectedtoken:
-            print('merging',selectedtoken[:token[1]],'and',selectedtoken[token[1]+6:])
             b[start[0]][start[1]]=selectedtoken[:token[1]]+selectedtoken[token[1]+6:]
         else:
             b[start[0]][start[1]]=selectedtoken[5:] 
