@@ -173,8 +173,9 @@ def in_track_move(token,dice): #need to make changes
                             tokinfo=i['tokens_on_track'][t]
                             print('tokinfo',tokinfo)
                             circlst=tokinfo[2]
+                            oldtile=tokinfo[2]
                             for d in range(dice):
-                                    print('the number',d,'the dice',dice)
+                                    # print('the number',d,'the dice',dice)
                                     circlst+=1
                                     print('updating circlst',circlst)
                                     if circlst>=48:
@@ -184,12 +185,15 @@ def in_track_move(token,dice): #need to make changes
                                         h=towardshome(token,dice-d,track[circlst])
                                         print('home token',h)
                                         return h
-                            track[circlst].append(tokinfo) 
                             temp=track[circlst]
+                            print('track[oldtile]',track[oldtile])
+                            print('track[circlst]',track[circlst])
+                            tilestraversed=tokinfo[0][2]+dice
+                            track[oldtile].remove(tokinfo[0])
+                            track[circlst].append((tokinfo[0][0],tokinfo[0][1],tilestraversed))
                             print('temp hopeful',temp) 
                             destination=b[temp[0][0]][temp[0][1]]
-                            i['tokens_on_track'][t]=(i['tokens_on_track'][t][0][0],i['tokens_on_track'][t][0][1],i['tokens_on_track'][t][0][2]+dice)
-                            i['tokens_on_track'][t]=(i['tokens_on_track'][t],temp[0],circlst)
+                            i['tokens_on_track'][t]=((i['tokens_on_track'][t][0][0],i['tokens_on_track'][t][0][1],i['tokens_on_track'][t][0][2]+dice),temp[0],circlst)
                             return (destination,temp[0],temp)
 
 def towardshome(token,dice,loc):
@@ -235,20 +239,22 @@ def add_token_to_str(token,string):
     return string
 def extract_token_from_str(token,string):
     token = 'pla' + token
-    pos = 0
-    while pos+5 != len(string):
-        Slice = string[pos:pos+5]
-        if Slice == token:
-            if len(string) > len(token)+2:
-                string = string[5:]
-            elif '-' in string[pos:]: #if this isn't the last token
-                string = string[:pos] +string[pos+6:]
+    extracted = ''
+    lst = string.split('-')
+    for i in lst:
+        if i[:5] == token:
+            extracted = i[:5]
+            if len(i) >5:
+                lst.remove(i)
+                lst.append(i[5:])
             else:
-                string = string[:pos-1] + string[pos+5:] #to remove the slice from original string
-            return Slice,string
-        else:
-            pos+= 1    
-
+                lst.remove(i)
+    new_str = ''
+    for i in lst:
+        new_str = new_str + '-' + i
+    if new_str[0] == '-':
+        new_str = new_str[1:]
+    return extracted,new_str
 def move(start,dice):
     tokinfo=()
     token=() #first argument is the colour and the number of the token, second is the position in the selectedtoken 
@@ -303,6 +309,7 @@ def move(start,dice):
         if 's' in destination[0]: #star position
             col='s'+col
             print('col',col)
+            print('wat is going in',destination[0])
         if len(destination[0])>4:
             ous=oust(destination[0],destination[2],token)
             if ous==False:
@@ -314,21 +321,39 @@ def move(start,dice):
         else:
             b[destination[1][0]][destination[1][1]]='pla'+token[0]+destination[0]
             print('changed destination',b[destination[1][0]][destination[1][1]])
-        pos = 0
         newtoken='pla'+token[0]
-        while pos+5 != len(b[start[0]][start[1]]):
-            Slice = b[start[0]][start[1]][pos:pos+5]
-            if Slice == newtoken:
-                if len(b[start[0]][start[1]]) > len(token[0])+2:
-                    b[start[0]][start[1]] = b[start[0]][start[1]][5:]
-                elif '-' in b[start[0]][start[1]][pos:]: #if this isn't the last token
-                    b[start[0]][start[1]] = b[start[0]][start[1]][:pos] +b[start[0]][start[1]][pos+6:]
+        string5 = b[start[0]][start[1]]
+        lst = string5.split('-')
+        for i in lst:
+            if i[:5] == newtoken:
+                # extracted = i[:5]
+                if len(i) >5:
+                    lst.remove(i)
+                    lst.append(i[5:])
                 else:
-                    b[start[0]][start[1]] = b[start[0]][start[1]][:pos-1] + b[start[0]][start[1]][pos+5:]
-                print('what was left',b[start[0]][start[1]])
-                break
-            else:
-                pos+=1
+                    lst.remove(i)
+        new_str = ''
+        for i in lst:
+            new_str = new_str + '-' + i
+        if new_str[0] == '-':
+            new_str = new_str[1:]
+        b[start[0]][start[1]] = new_str
+        print('what was left',b[start[0]][start[1]])
+        # pos = 0
+        # newtoken='pla'+token[0]
+        # while pos+5 != len(b[start[0]][start[1]]):
+        #     Slice = b[start[0]][start[1]][pos:pos+5]
+        #     if Slice == newtoken:
+        #         if len(b[start[0]][start[1]]) > len(token[0])+2:
+        #             b[start[0]][start[1]] = b[start[0]][start[1]][5:]
+        #         elif  b[start[0]][start[1]][pos+5]=='-': #if this isn't the last token
+        #             b[start[0]][start[1]] = b[start[0]][start[1]][:pos] +b[start[0]][start[1]][pos+6:]
+        #         else:
+        #             b[start[0]][start[1]] = b[start[0]][start[1]][:pos-1] + b[start[0]][start[1]][pos+5:]
+        #         print('what was left',b[start[0]][start[1]])
+        #         break
+        #     else:
+        #         pos+=1
 
         #     if ous == False:
         #     # if destination[0][:4]==selectedtoken[:4] or 's' in col:
