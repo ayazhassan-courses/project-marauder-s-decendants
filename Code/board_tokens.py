@@ -122,10 +122,20 @@ def dice():
     pygame.time.delay(500)   
 def check_valid(start):
     selectedtoken=b[start[0]][start[1]]
-    if selectedtoken[:4]==data_structures.defturn:
-        return True
+    if '-' in selectedtoken:
+        plaspot.append((selectedtoken[:5],0)) #first token is saved in plaspot
+        for character in range(len(selectedtoken)):
+            if selectedtoken[character]=='-': #if more than one token is present, they will be identified and stored in plaspot too
+                plaspot.append((selectedtoken[character+1:character+6],character))
+        for ch in plaspot: 
+            if ch[0][:4]==data_structures.defturn:
+                return True
+        return False
     else:
-        False
+        if selectedtoken[:4]==data_structures.defturn:
+            return True
+        else:
+            return False
     
 def field_to_track(token):
     for i in data_structures.Players:

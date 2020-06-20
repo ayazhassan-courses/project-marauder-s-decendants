@@ -65,6 +65,8 @@ def game():
                                 print('Wrong Move!',b[clickarg[0][0]][clickarg[0][1]])
                         else:
                             print('your turn will be passed')
+                            valid=True
+                            data_structures.dice_roll=[]
                     else:
                         print('roll dice')
                 clickarg=[]
