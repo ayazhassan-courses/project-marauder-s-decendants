@@ -1,4 +1,4 @@
-#more files to keep clutter low in main file
+7#more files to keep clutter low in main file
 import pygame
 import random
 import data_f
@@ -49,24 +49,21 @@ def game():
                 else:
                     print('click on the knight!')
                 if len(clickarg)==1: #clickarg will either have 1 or no value in the form of tile
-                    if is_empty(data_structures.dice_roll)==False:
-                        if top(data_structures.dice_roll)!='you got 3 sixes, your turn will be passed':
+                    if is_empty(data_structures.dice_roll2)==False:
+                        if top(data_structures.dice_roll2)!='you got 3 sixes, your turn will be passed':
                             if check_valid(clickarg[0])==True:
                                 # may need to implement check wvalid everywhere
                                 print('clickarg',clickarg)
-                                move(clickarg[0],top(data_structures.dice_roll))
-                                pop(data_structures.dice_roll)
-                                print('dice',data_structures.dice_roll)
-                                if is_empty(data_structures.dice_roll)==True:
+                                move(clickarg[0],top(data_structures.dice_roll2))
+                                pop(data_structures.dice_roll2)
+                                print('dice after the move',data_structures.dice_roll2)
+                                if is_empty(data_structures.dice_roll2)==True:
                                     print('your turn has ended')
                                     valid=True
-
                             else:
                                 print('Wrong Move!',b[clickarg[0][0]][clickarg[0][1]])
                         else:
                             print('your turn will be passed')
-                            valid=True
-                            data_structures.dice_roll=[]
                     else:
                         print('roll dice')
                 clickarg=[]
@@ -107,10 +104,14 @@ def game():
                 if top(data_structures.dice_roll)==6:
                     six_count+=1
                 print('dice stack',data_structures.dice_roll)
+            while is_empty(data_structures.dice_roll)==False:
+                x = pop(data_structures.dice_roll)
+                push(data_structures.dice_roll2, x)
+            print('dice stack 2', data_structures.dice_roll2)
             if six_count==3:
-                while is_empty(data_structures.dice_roll)==False:
-                   pop(data_structures.dice_roll) 
-                data_structures.dice_roll.append('you got 3 sixes, your turn will be passed')
+                while is_empty(data_structures.dice_roll2)==False:
+                   pop(data_structures.dice_roll2) 
+                data_structures.dice_roll2.append('you got 3 sixes, your turn will be passed')
                 
         pygame.display.update()
         clock.tick(60)

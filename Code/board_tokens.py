@@ -118,9 +118,10 @@ def dice():
         count+=1
         pygame.time.delay(100)
         pygame.display.update()
-    data_structures.dice_roll.append(num)
+    push(data_structures.dice_roll, num)
     pygame.time.delay(500)   
 def check_valid(start):
+    plaspot = []
     selectedtoken=b[start[0]][start[1]]
     if '-' in selectedtoken:
         plaspot.append((selectedtoken[:5],0)) #first token is saved in plaspot
