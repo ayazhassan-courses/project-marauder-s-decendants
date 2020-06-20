@@ -26,7 +26,8 @@ for i in range(len(board)): #storing token color and coordinates (x,y) in tuple
 # p1_2 = 0
 # p1_3 = 0
 # p1_4 = 0
-
+end=False
+winner=''
 P1 = {
     'playcolor':'plar',
     'tokens_on_track' : [],
@@ -186,6 +187,7 @@ def plawon(token):
             player=i
             if player['tokens_won']==4:
                 print('player '+token[0][0]+' won!')
+                return True
 
 
 # def move_token(player, spaces, track):   

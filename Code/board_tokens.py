@@ -121,6 +121,7 @@ def dice():
     data_structures.dice_roll.append(num)
     pygame.time.delay(500)   
 def check_valid(start):
+    plaspot=[]
     selectedtoken=b[start[0]][start[1]]
     if '-' in selectedtoken:
         plaspot.append((selectedtoken[:5],0)) #first token is saved in plaspot
@@ -180,7 +181,7 @@ def in_track_move(token,dice): #need to make changes
                                         # track[circlst].append(tokinfo) #error fixed
                                         circlst=0
                                     if i['tokens_on_track'][t][0][2]+d+1==46: 
-                                        h=towardshome(token,dice-d,track[circlst][0])
+                                        h=towardshome(token,dice-d,track[circlst])
                                         print('home token',h)
                                         return h
                             track[circlst].append(tokinfo) 
@@ -200,16 +201,19 @@ def towardshome(token,dice,loc):
             homefin=i[1][1]
             if homestart[0]==homefin[0]:
                 if homestart[1]<homefin[1]:
-                    temp=(loc[0],loc[1]+dice)
+                    temp=(loc[0][0],loc[0][1]+dice)
                 else:
-                    temp=(loc[0],loc[1]-dice)
+                    temp=(loc[0][0],loc[0][1]-dice)
             else:
                 if homestart[0]<homefin[0]:
-                    temp=(loc[0]+dice,loc[1])
+                    temp=(loc[0][0]+dice,loc[0][1])
                 else:
-                    temp=(loc[0]-dice,loc[1])
+                    temp=(loc[0][0]-dice,loc[0][1])
             destination=b[temp[0]][temp[1]]
+            checkhomelane(token,loc)
             info=i['home']
+            if plawon(token)==True:
+                return('end the game')
             return (destination,temp,info)
 
 
@@ -259,6 +263,10 @@ def move(start,dice):
         destination=in_track_move(token,dice)
         print(' we are checking for destination', destination)
     if destination!=[]: #swapping of token
+        if destination=='end the game':
+            data_structures.end=True
+            winner=data_structures.defturn
+            pass
         col=destination[0][-1] #detecting error here 
         if 's' in destination[0]: #star position
             col='s'+col

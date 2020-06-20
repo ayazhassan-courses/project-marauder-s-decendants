@@ -31,7 +31,6 @@ def maketrack():
 def turn(n):
     players=['plar','plab','plag','play']
     return players[n]
-    
 screen=startgame()
 b=makeboard()
 track=maketrack()

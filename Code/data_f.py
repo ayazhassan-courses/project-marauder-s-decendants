@@ -14,6 +14,10 @@ boardheighttiles=round(676/13)
 boardstartx= (screenwidth-boardwidth)//2
 boardstarty=(screenheight-boardheight)//2
 
+startplay=((screenwidth/2)-250,(screenheight/2)+50,150,50)
+startquit=((screenwidth/2)+50,(screenheight/2)+50,150,50)
+endplay=((screenwidth/2)-250,(screenheight/2)+50,150,50)
+endquit=((screenwidth/2)+50,(screenheight/2)+50,150,50)
 # colors:
 black=(0,0,0)
 white=(255,255,255)
