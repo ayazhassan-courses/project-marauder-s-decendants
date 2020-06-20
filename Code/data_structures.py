@@ -78,6 +78,7 @@ P4 = {
 
 #dice rolls stack
 dice_roll = []
+dice_roll2 = []
 #tile indexes for stops
 stops = [(0,'rh'),(7,'b'),(12,'bh'),(19,'g'),(24,'gh'),(31,'y'),(36,'yh'),(43,'r')]
 homelanes=[('r',[(6,1),(6,5)]),('b',[(1,6),(5,6)]),('g',[(6,11),(6,7)]),('y',[(11,6),(7,6)])]

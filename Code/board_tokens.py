@@ -215,7 +215,39 @@ def towardshome(token,dice,loc):
             if plawon(token)==True:
                 return('end the game')
             return (destination,temp,info)
+def extract_token_from_str(token,string):
+    token = 'pla' + token
+    pos = 0
+    while pos+5 != len(string):
+        Slice = string[pos:pos+5]
+        if Slice == token:
+            string = string[:pos] +string[pos+6:] #to remove the slice from original string
+            return Slice
+        else:
+            pos+= 1
 
+def add_token_to_str(token,string):
+    token = 'pla' + token
+    if string != 'sr':
+        string = string + '-' + token
+    else:
+        string = token+string
+    return string
+def extract_token_from_str(token,string):
+    token = 'pla' + token
+    pos = 0
+    while pos+5 != len(string):
+        Slice = string[pos:pos+5]
+        if Slice == token:
+            if len(string) > len(token)+2:
+                string = string[5:]
+            elif '-' in string[pos:]: #if this isn't the last token
+                string = string[:pos] +string[pos+6:]
+            else:
+                string = string[:pos-1] + string[pos+5:] #to remove the slice from original string
+            return Slice,string
+        else:
+            pos+= 1    
 
 def move(start,dice):
     tokinfo=()
@@ -229,7 +261,7 @@ def move(start,dice):
         print('invalid')
         pass
     if '-' in selectedtoken: #there is a chance of multiple tokens
-        plaspot.append((selectedtoken[:5],0)) #first token is saved in plaspot
+        plaspot.append((selectedtoken[:5],-1)) #first token is saved in plaspot
         for character in range(len(selectedtoken)):
             if selectedtoken[character]=='-': #if more than one token is present, they will be identified and stored in plaspot too
                 plaspot.append((selectedtoken[character+1:character+6],character))
@@ -273,20 +305,52 @@ def move(start,dice):
             print('col',col)
         if len(destination[0])>4:
             ous=oust(destination[0],destination[2],token)
-            if ous == False:
-            # if destination[0][:4]==selectedtoken[:4] or 's' in col:
-                # need to fix this
-                b[destination[1][0]][destination[1][1]]=destination[0][:-2]+'-'+selectedtoken[:5]+col #not sure about the col position
+            if ous==False:
+                b[destination[1][0]][destination[1][1]]='pla'+token[0]+'-'+destination[0]
                 print('changed destination',b[destination[1][0]][destination[1][1]])
             else:
-                b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
-                print('token ousted',b[destination[1][0]][destination[1][1]])
-            #else statement from hana's code: outset, this is where the token will be killed and removed from the track    
+                b[destination[1][0]][destination[1][1]]='pla'+token[0]+col
+                print('changed destination',b[destination[1][0]][destination[1][1]])
         else:
-            b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
-        if '-' in selectedtoken:
-            b[start[0]][start[1]]=selectedtoken[:token[1]]+selectedtoken[token[1]+6:]
-        else:
-            b[start[0]][start[1]]=selectedtoken[5:] 
+            b[destination[1][0]][destination[1][1]]='pla'+token[0]+destination[0]
+            print('changed destination',b[destination[1][0]][destination[1][1]])
+        pos = 0
+        newtoken='pla'+token[0]
+        while pos+5 != len(b[start[0]][start[1]]):
+            Slice = b[start[0]][start[1]][pos:pos+5]
+            if Slice == newtoken:
+                if len(b[start[0]][start[1]]) > len(token[0])+2:
+                    b[start[0]][start[1]] = b[start[0]][start[1]][5:]
+                elif '-' in b[start[0]][start[1]][pos:]: #if this isn't the last token
+                    b[start[0]][start[1]] = b[start[0]][start[1]][:pos] +b[start[0]][start[1]][pos+6:]
+                else:
+                    b[start[0]][start[1]] = b[start[0]][start[1]][:pos-1] + b[start[0]][start[1]][pos+5:]
+                print('what was left',b[start[0]][start[1]])
+                break
+            else:
+                pos+=1
+
+        #     if ous == False:
+        #     # if destination[0][:4]==selectedtoken[:4] or 's' in col:
+        #         # need to fix this
+        #         b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+'-'+destination[0]
+        #         # b[destination[1][0]][destination[1][1]]=destination[0][:-2]+'-'+selectedtoken[:5]+col #not sure about the col position
+        #         print('changed destination',b[destination[1][0]][destination[1][1]])
+        #     else:
+        #         b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
+        #         print('token ousted',b[destination[1][0]][destination[1][1]])
+        #     #else statement from hana's code: outset, this is where the token will be killed and removed from the track    
+        # else:
+        #     if '-' not in selectedtoken:
+        #         b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
+        #     else:
+        #         b[destination[1][0]][destination[1][1]]=selectedtoken[token[1]+1:token[1]+6]+col
+        #         print('destination changed',b[destination[1][0]][destination[1][1]])
+        # if '-' in selectedtoken:
+        #     b[start[0]][start[1]]=selectedtoken[:token[1]+1]+selectedtoken[token[1]+6:]
+        #     print('from',selectedtoken,'what was left',b[start[0]][start[1]])
+        # else:
+        #     b[start[0]][start[1]]=selectedtoken[5:] 
+        #     print('what was left',b[start[0]][start[1]])
 
 
