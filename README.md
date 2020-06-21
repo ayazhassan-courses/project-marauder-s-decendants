@@ -20,7 +20,7 @@ Team:
 ### Installing
 
 Install Python.
-Install Pygame
+Install Pygame. 
 Download all files containing the code.
 
 ## Running the game
