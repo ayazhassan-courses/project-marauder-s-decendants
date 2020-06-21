@@ -28,6 +28,7 @@ def game():
                 if end==True:
                     if mouse[0]>x and mouse[0]<x+w and mouse[1]>y and mouse[1]<y+h:
                         end=False
+                        game()
         if start==(True,False):
             screen.fill((255,255,255))
             title = pygame.font.Font(data_f.titlefont,data_f.titlefsize)

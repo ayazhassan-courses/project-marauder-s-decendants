@@ -55,6 +55,7 @@ def game():
                     xq,yq,wq,hq=data_f.endquit
                     if mouse[0]>xp and mouse[0]<xp+wp and mouse[1]>yp and mouse[1]<yp+hp:
                         data_structures.end=False
+                        game()
                     elif mouse[0]>xq and mouse[0]<xq+wq and mouse[1]>yq and mouse[1]<yq+hq:
                         pygame.quit()
                 # ################################################################################
@@ -68,13 +69,24 @@ def game():
                     else:
                         print('click on the knight!')
                     if len(clickarg)==1: #clickarg will either have 1 or no value in the form of tile
+                        
                         if is_empty(data_structures.dice_roll2)==False:
                             if top(data_structures.dice_roll2)!='you got 3 sixes, your turn will be passed':
                                 if check_valid(clickarg[0])==True:
                                     # may need to implement check wvalid everywhere
                                     print('clickarg',clickarg)
-                                    move(clickarg[0],top(data_structures.dice_roll2))
-                                    pop(data_structures.dice_roll2)
+                                    v=move(clickarg[0],top(data_structures.dice_roll2))
+                                    pl=findplayer()
+                                    print('six condition',v,pl['tokens_on_track'])
+                                    if v==False:
+                                        if pl['tokens_on_track']==[]:
+                                            valid=True 
+                                            pop(data_structures.dice_roll2)
+                                            print('you cannot make a move')
+                                        else:
+                                            print('try again')
+                                    else:
+                                        pop(data_structures.dice_roll2)
                                     print('dice after the move',data_structures.dice_roll2)
                                     if is_empty(data_structures.dice_roll2)==True:
                                         print('your turn has ended')
@@ -83,8 +95,9 @@ def game():
                                     print('Wrong Move!',b[clickarg[0][0]][clickarg[0][1]])
                             else:
                                 print('your turn will be passed')
-                                valid=True
                                 data_structures.dice_roll2=data_structures.dice_roll=[]
+                                valid=True
+                                
                         else:
                             print('roll dice')
                     clickarg=[]
@@ -133,19 +146,22 @@ def game():
             # need to revise button function
             dicebutton, display =button('Roll Dice',50,50,100,50,data_f.boardred, 'dice')
             if dicebutton and display:
-                if len(data_structures.dice_roll)==1 and top(data_structures.dice_roll)!=6:
+                if is_empty(data_structures.dice_roll)==False and top(data_structures.dice_roll)!=6:
                     print('invalid')
+                elif is_empty(data_structures.dice_roll)==True and is_empty(data_structures.dice_roll2)==False:
+                    print('no extra turn!')
                 else: 
                     dice()
-                print(data_structures.dice_roll)
+                print('diceroll',data_structures.dice_roll)
                 six_count=0
-                if top(data_structures.dice_roll)==6:
+                if is_empty(data_structures.dice_roll)==False and top(data_structures.dice_roll)==6:
                     six_count=1
-                while top(data_structures.dice_roll)==6 and six_count!=3:
+                while is_empty(data_structures.dice_roll)==False and top(data_structures.dice_roll)==6 and six_count!=3:
                     dice()
                     if top(data_structures.dice_roll)==6:
                         six_count+=1
                     print('dice stack',data_structures.dice_roll)
+                    clock.tick(60)
                 while is_empty(data_structures.dice_roll)==False:
                     x = pop(data_structures.dice_roll)
                     push(data_structures.dice_roll2, x)

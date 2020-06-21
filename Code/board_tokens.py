@@ -84,9 +84,11 @@ def drawtoken(): #reads board and draws token where 'plar' etc are             #
                     if t1 in token:
                         screen.blit(token[t1],pygame.Rect((j*width)+data_f.boardstartx,(i*height)+data_f.boardstarty,height,width))
 def dice():
+    clock=pygame.time.Clock() 
     count=0
-    while count!=10:
+    while count!=5:
         num=random.randint(1,6)
+        # num=6
         pygame.draw.rect(screen,data_f.white,((data_f.diceposx),(data_f.diceposy),data_f.dicewidth,data_f.diceheight))
         if num==1:
             pygame.draw.circle(screen,data_f.black,(data_f.diceposx+(data_f.dicewidth//2),data_f.diceposy+(data_f.diceheight//2)),8)
@@ -116,10 +118,11 @@ def dice():
             pygame.draw.circle(screen,data_f.black,(data_f.diceposx+((data_f.dicewidth//2)+(data_f.dicewidth//4)),data_f.diceposy+(data_f.diceheight//2)+(data_f.diceheight//4)),8)
             pygame.draw.circle(screen,data_f.black,(data_f.diceposx+((data_f.dicewidth//2)-(data_f.dicewidth//4)),data_f.diceposy+(data_f.diceheight//2)-(data_f.diceheight//4)),8)
         count+=1
-        pygame.time.delay(100)
+        pygame.time.delay(75)
         pygame.display.update()
     push(data_structures.dice_roll, num)
-    pygame.time.delay(500)   
+    pygame.time.delay(400)
+    clock.tick(30)   
 def check_valid(start):
     plaspot=[]
     selectedtoken=b[start[0]][start[1]]
@@ -128,6 +131,7 @@ def check_valid(start):
         for character in range(len(selectedtoken)):
             if selectedtoken[character]=='-': #if more than one token is present, they will be identified and stored in plaspot too
                 plaspot.append((selectedtoken[character+1:character+6],character))
+        print('check valid plaspot',plaspot)
         for ch in plaspot: 
             if ch[0][:4]==data_structures.defturn:
                 return True
@@ -137,8 +141,18 @@ def check_valid(start):
             return True
         else:
             return False
-    
-def field_to_track(token):
+def findplayer():
+    for i in data_structures.Players:
+        if i['playcolor']==data_structures.defturn:
+            return i
+def seetokensinfield(pla,colrow):
+    for i in pla['tokens_in_field']:
+        if i[1]==colrow:
+            return True    
+def field_to_track(token,dice,start):
+    print('dice',dice)
+    if dice!=6 and seetokensinfield(findplayer(),start)==True:
+        return 'you need a six'
     for i in data_structures.Players:
         if i['playcolor']==data_structures.defturn:
                 print('player',i['playcolor'])
@@ -295,7 +309,10 @@ def move(start,dice):
         else:
             pass
             # print(token)
-    destination=field_to_track(token)
+    destination=field_to_track(token,dice,start)
+    if destination=='you need a six':
+        print('you need a six')
+        return False
     if destination=='not in field': 
         print('not in field') #nothing returned here
         destination=in_track_move(token,dice)
@@ -317,6 +334,7 @@ def move(start,dice):
                 print('changed destination',b[destination[1][0]][destination[1][1]])
             else:
                 b[destination[1][0]][destination[1][1]]='pla'+token[0]+col
+                dice()
                 print('changed destination',b[destination[1][0]][destination[1][1]])
         else:
             b[destination[1][0]][destination[1][1]]='pla'+token[0]+destination[0]
@@ -329,15 +347,22 @@ def move(start,dice):
                 # extracted = i[:5]
                 if len(i) >5:
                     lst.remove(i)
-                    lst.append(i[5:])
+                    if lst == []:
+                        lst.append(i[5:])
+                    else:
+                        lst[-1] = lst[-1]+(i[5:])
                 else:
                     lst.remove(i)
+        # print('lst',lst)
         new_str = ''
-        for i in lst:
-            new_str = new_str + '-' + i
-        if new_str[0] == '-':
-            new_str = new_str[1:]
-        b[start[0]][start[1]] = new_str
+        if len(lst) == 1:
+            b[start[0]][start[1]] = lst[0]
+        else:
+            for i in lst:
+                new_str = new_str + '-' + i
+            if new_str[0] == '-':
+                new_str = new_str[1:]
+            b[start[0]][start[1]] = new_str 
         print('what was left',b[start[0]][start[1]])
         # pos = 0
         # newtoken='pla'+token[0]
