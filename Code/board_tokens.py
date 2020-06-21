@@ -221,6 +221,7 @@ def towardshome(token,dice,loc):
             for j in range(len(pl['tokens_on_track'])):
                 if pl['tokens_on_track'][j][0][0] == token[0]:
                     tbr = j
+                    hompos = pl['tokens_on_track'][j][2]
             print(pl['tokens_on_track'], 'is token on track that has to be emptied later')
             homestart=i[1][0]
             homefin=i[1][1]
@@ -228,6 +229,12 @@ def towardshome(token,dice,loc):
                 if homestart[1]<homefin[1]:
                     if loc[0][1]+dice==homefin[1]+1:
                         pl['tokens_won']+=1
+                        for i in range(len(pl['home'])):
+                            if pl['home'][i][0] == token[0]:
+                                for_outhome = pl['home'][i]
+                                pl['home'].pop(i)
+                        pl['outofhome'].append(for_outhome)
+                        print('token ', token[0], 'went home!')
                         # it will go home
                     elif loc[0][1]+dice>homefin[1]+1:
                         # greater number than home 
@@ -235,11 +242,18 @@ def towardshome(token,dice,loc):
                     else:
                         temp=(loc[0][0],loc[0][1]+dice)
                         if token not in pl['home']:
-                            pl['home'].append((token, loc[0]))
+                            pl['home'].append((token[0], loc[0]))
                             pl['tokens_on_track'].pop(tbr)
+
                 else:
                     if loc[0][1]-dice==homefin[1]+1:
                         pl['tokens_won']+=1
+                        for i in range(len(pl['home'])):
+                            if pl['home'][i][0] == token[0]:
+                                for_outhome = pl['home'][i]
+                                pl['home'].pop(i)
+                        pl['outofhome'].append(for_outhome)
+                        print('token ', token[0], 'went home!')
                         # it will go home
                     elif loc[0][1]-dice<homefin[1]+1:
                         # greater number than home 
@@ -247,24 +261,41 @@ def towardshome(token,dice,loc):
                     else:
                         temp=(loc[0][0],loc[0][1]-dice)
                         if token not in pl['home']:
-                            pl['home'].append((token, loc[0]))
+                            pl['home'].append((token[0], loc[0]))
                             pl['tokens_on_track'].pop(tbr)
             else:
                 if homestart[0]<homefin[0]:
                     if loc[0][0]+dice==homefin[0]+1:
                         pl['tokens_won']+=1
-                        # it will go home
+
+                        for i in range(len(pl['home'])):
+                            if pl['home'][i][0] == token[0]:
+                                for_outhome = pl['home'][i]
+                                pl['home'].pop(i)
+                        pl['outofhome'].append(for_outhome)
+                        print('token ', token[0], 'went home!')
+                      
+                        for to in range(1, len(track[hompos])):
+                            if track[hompos][to][0] == track[0]:
+                                track[hompos].pop(to)
+
                     elif loc[0][0]+dice>homefin[0]+1:
                         # greater number than home 
                         return 'not possible'
                     else:
                         temp=(loc[0][0]+dice,loc[0][1])
                         if token not in pl['home']:
-                            pl['home'].append((token, loc[0]))
+                            pl['home'].append((token[0], loc[0]))
                             pl['tokens_on_track'].pop(tbr)
                 else:
                     if loc[0][0]-dice==homefin[0]+1:
                         pl['tokens_won']+=1
+                        for i in range(len(pl['home'])):
+                            if pl['home'][i][0] == token[0]:
+                                for_outhome = pl['home'][i]
+                                pl['home'].pop(i)
+                        pl['outofhome'].append(for_outhome)
+                        print('token ', token[0], 'went home!')
                         # it will go home
                     elif loc[0][0]-dice<homefin[0]+1:
                         # greater number than home 
@@ -272,7 +303,7 @@ def towardshome(token,dice,loc):
                     else:
                         temp=(loc[0][0]-dice,loc[0][1])
                         if token not in pl['home']:
-                                pl['home'].append((token, loc[0]))
+                                pl['home'].append((token[0], loc[0]))
                                 pl['tokens_on_track'].pop(tbr)
             print(temp, 'is temp for home')
             print(loc, 'loc is for home')
@@ -374,7 +405,9 @@ def move(start,dicee):
             winner=data_structures.defturn
             pass
         if destination=='not possible':
-            pass
+            print('this is not possible, number greater than available tiles')
+            pass ###########
+
         col=destination[0][-1] #detecting error here 
         if 's' in destination[0]: #star position
             col='s'+col

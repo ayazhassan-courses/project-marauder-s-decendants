@@ -76,6 +76,9 @@ def game():
                                     # may need to implement check wvalid everywhere
                                     print('clickarg',clickarg)
                                     v=move(clickarg[0],top(data_structures.dice_roll2))
+                                    # if v == False:
+                                    #     valid== True
+                                    #     break
                                     pl=findplayer()
                                     print('six condition',v,pl['tokens_on_track'])
                                     if v=='rollagain':
