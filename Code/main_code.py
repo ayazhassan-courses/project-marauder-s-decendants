@@ -78,6 +78,9 @@ def game():
                                     v=move(clickarg[0],top(data_structures.dice_roll2))
                                     pl=findplayer()
                                     print('six condition',v,pl['tokens_on_track'])
+                                    if v=='rollagain':
+                                        dice()
+                                        push(data_structures.dice_roll2,pop(data_structures.dice_roll))
                                     if v==False:
                                         if pl['tokens_on_track']==[]:
                                             valid=True 

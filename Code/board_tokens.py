@@ -195,7 +195,7 @@ def in_track_move(token,dice): #need to make changes
                                     if circlst>=48:
                                         # track[circlst].append(tokinfo) #error fixed
                                         circlst=0
-                                    if i['tokens_on_track'][t][0][2]+d+1==46: 
+                                    if i['tokens_on_track'][t][0][2]+d+1==46 and i['ousted']==True: 
                                         h=towardshome(token,dice-d,track[circlst])
                                         print('home token',h)
                                         return h
@@ -215,21 +215,63 @@ def towardshome(token,dice,loc):
     temp=()
     for i in data_structures.homelanes:
         if i[0]==token[0][0]:
+            for j in data_structures.Players:
+                if j['playcolor'][3] == token[0][0]:
+                    pl = j
             homestart=i[1][0]
             homefin=i[1][1]
             if homestart[0]==homefin[0]:
                 if homestart[1]<homefin[1]:
-                    temp=(loc[0][0],loc[0][1]+dice)
+                    if loc[0][1]+dice==homefin[1]+1:
+                        pl['tokens_won']+=1
+                        # it will go home
+                    elif loc[0][1]+dice>homefin[1]+1:
+                        # greater number than home 
+                        return 'not possible'
+                    else:
+                        temp=(loc[0][0],loc[0][1]+dice)
+                        if token not in pl['home']:
+                            pl['home'].append(token)
                 else:
-                    temp=(loc[0][0],loc[0][1]-dice)
+                    if loc[0][1]-dice==homefin[1]+1:
+                        player['tokens_won']+=1
+                        # it will go home
+                    elif loc[0][1]-dice<homefin[1]+1:
+                        # greater number than home 
+                        return 'not possible'
+                    else:
+                        temp=(loc[0][0],loc[0][1]-dice)
+                        if token not in pl['home']:
+                            pl['home'].append(token)
             else:
                 if homestart[0]<homefin[0]:
-                    temp=(loc[0][0]+dice,loc[0][1])
+                    if loc[0][0]+dice==homefin[0]+1:
+                        pl['tokens_won']+=1
+                        # it will go home
+                    elif loc[0][0]+dice>homefin[0]+1:
+                        # greater number than home 
+                        return 'not possible'
+                    else:
+                        temp=(loc[0][0]+dice,loc[0][1])
+                        if token not in pl['home']:
+                            pl['home'].append(token)
                 else:
-                    temp=(loc[0][0]-dice,loc[0][1])
+                    if loc[0][0]-dice==homefin[0]+1:
+                        pl['tokens_won']+=1
+                        # it will go home
+                    elif loc[0][0]-dice<homefin[0]+1:
+                        # greater number than home 
+                        return 'not possible'
+                    else:
+                        temp=(loc[0][0]-dice,loc[0][1])
+                        if token not in pl['home']:
+                                pl['home'].append(token)
+            print(temp, 'is temp for home')
+            print(loc, 'loc is for home')
+            print(token, 'token for home')
             destination=b[temp[0]][temp[1]]
-            checkhomelane(token,loc)
-            info=i['home']
+            print(destination, 'is destination for home')
+            info=pl['home'] 
             if plawon(token)==True:
                 return('end the game')
             return (destination,temp,info)
@@ -269,7 +311,7 @@ def extract_token_from_str(token,string):
     if new_str[0] == '-':
         new_str = new_str[1:]
     return extracted,new_str
-def move(start,dice):
+def move(start,dicee):
     tokinfo=()
     token=() #first argument is the colour and the number of the token, second is the position in the selectedtoken 
     pos=()
@@ -309,36 +351,26 @@ def move(start,dice):
         else:
             pass
             # print(token)
-    destination=field_to_track(token,dice,start)
+    destination=field_to_track(token,dicee,start)
     if destination=='you need a six':
         print('you need a six')
         return False
     if destination=='not in field': 
         print('not in field') #nothing returned here
-        destination=in_track_move(token,dice)
+        destination=in_track_move(token,dicee)
         print(' we are checking for destination', destination)
     if destination!=[]: #swapping of token
         if destination=='end the game':
             data_structures.end=True
             winner=data_structures.defturn
             pass
+        if destination=='not possible':
+            pass
         col=destination[0][-1] #detecting error here 
         if 's' in destination[0]: #star position
             col='s'+col
             print('col',col)
             print('wat is going in',destination[0])
-        if len(destination[0])>4:
-            ous=oust(destination[0],destination[2],token)
-            if ous==False:
-                b[destination[1][0]][destination[1][1]]='pla'+token[0]+'-'+destination[0]
-                print('changed destination',b[destination[1][0]][destination[1][1]])
-            else:
-                b[destination[1][0]][destination[1][1]]='pla'+token[0]+col
-                # dice()
-                print('changed destination',b[destination[1][0]][destination[1][1]])
-        else:
-            b[destination[1][0]][destination[1][1]]='pla'+token[0]+destination[0]
-            print('changed destination',b[destination[1][0]][destination[1][1]])
         newtoken='pla'+token[0]
         string5 = b[start[0]][start[1]]
         lst = string5.split('-')
@@ -364,6 +396,19 @@ def move(start,dice):
                 new_str = new_str[1:]
             b[start[0]][start[1]] = new_str 
         print('what was left',b[start[0]][start[1]])
+        if len(destination[0])>4:
+            ous=oust(destination[0],destination[2],token)
+            if ous==False:
+                b[destination[1][0]][destination[1][1]]='pla'+token[0]+'-'+destination[0]
+                print('changed destination',b[destination[1][0]][destination[1][1]])
+            else:
+                b[destination[1][0]][destination[1][1]]='pla'+token[0]+col
+                print('changed destination',b[destination[1][0]][destination[1][1]])
+                return 'rollagain'
+        else:
+            b[destination[1][0]][destination[1][1]]='pla'+token[0]+destination[0]
+            print('changed destination',b[destination[1][0]][destination[1][1]])
+       
         # pos = 0
         # newtoken='pla'+token[0]
         # while pos+5 != len(b[start[0]][start[1]]):

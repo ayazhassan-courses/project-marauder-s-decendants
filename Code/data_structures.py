@@ -32,8 +32,8 @@ P1 = {
     'playcolor':'plar',
     'tokens_on_track' : [],
     'tokens_in_field' : [('r1',(1,1),0),('r2',(1,3),0),('r3',(3,1),0),('r4',(3,3),0)],
-    'tokens_won' : 0,
-    'ousted' : False,
+    'tokens_won' : 3,
+    'ousted' : True,
     'home' : [],
     'first' : 0,
     'last' : 46
@@ -44,8 +44,8 @@ P2 = {
     'playcolor':'plab',
     'tokens_on_track' : [],
     'tokens_in_field' : [('b1',(1,9),0),('b2',(1,11),0),('b3',(3,9),0),('b4',(3,11),0)],
-    'tokens_won' : 0,
-    'ousted' : False,
+    'tokens_won' : 3,
+    'ousted' : True,
     'home' : [],
     'first' : 12,
     'last' : 10
@@ -56,8 +56,8 @@ P3 = {
     'playcolor':'plag',
     'tokens_on_track' : [],
     'tokens_in_field' : [('g1',(9,9),0),('g2',(9,11),0),('g3',(11,9),0),('g4',(11,11),0)],
-    'tokens_won' : 0,
-    'ousted' : False,
+    'tokens_won' : 3,
+    'ousted' : True,
     'home' : [],
     'first' : 24,
     'last' : 22
@@ -68,8 +68,8 @@ P4 = {
     'playcolor':'play',
     'tokens_on_track' : [],
     'tokens_in_field' : [('y1',(9,1),0),('y2',(9,3),0),('y3',(11,1),0),('y4',(11,3),0)],
-    'tokens_won' : 0,
-    'ousted' : False,
+    'tokens_won' : 3,
+    'ousted' : True,
     'home' : [],
     'first' : 36,
     'last' : 34
@@ -167,10 +167,10 @@ def oust(destination,temp,token):
             # for i in track[new_pos]:
             #     if i not in player['tokens_on_track']:
 def checkhomelane(token,temp):
-    for i in data_structures.Players:
-        if i['playcolor']==data_structures.defturn:
+    for i in Players:
+        if i['playcolor']==defturn:
             player=i
-    for i in range(1,len(temp)):
+    for i in range(len(temp)): 
         if temp[i][0][0]==token[0][0]:
             if temp[i][0][2]==46 and player['ousted']==True:
                 for tile in track:
@@ -179,18 +179,17 @@ def checkhomelane(token,temp):
                         return True
     return False
 def reachedhome(token):
-    for i in data_structures.Players:
-        if i['playcolor']==data_structures.defturn:
+    for i in Players:
+        if i['playcolor']==defturn:
             player=i
             player['tokens_won']+=1
 def plawon(token):
-    for i in data_structures.Players:
-        if i['playcolor']==data_structures.defturn:
+    for i in Players:
+        if i['playcolor']==defturn:
             player=i
             if player['tokens_won']==4:
                 print('player '+token[0][0]+' won!')
                 return True
-
 
 # def move_token(player, spaces, track):   
 #     if len(player['tokens_on_track']) == 1: 
