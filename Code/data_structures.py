@@ -36,8 +36,8 @@ P1 = {
     'ousted' : True,
     'home' : [],
     'first' : 0,
-    'last' : 46
-
+    'last' : 46,
+    'outofhome' : []
 }
 
 P2 = {
@@ -48,8 +48,8 @@ P2 = {
     'ousted' : True,
     'home' : [],
     'first' : 12,
-    'last' : 10
-
+    'last' : 10,
+    'outofhome' : []
 }
 
 P3 = {
@@ -60,8 +60,8 @@ P3 = {
     'ousted' : True,
     'home' : [],
     'first' : 24,
-    'last' : 22
-
+    'last' : 22,
+    'outofhome' : []
 }
 
 P4 = {
@@ -72,8 +72,8 @@ P4 = {
     'ousted' : True,
     'home' : [],
     'first' : 36,
-    'last' : 34
-
+    'last' : 34,
+    'outofhome' : []
 }
 
 #dice rolls stack
@@ -135,7 +135,7 @@ def removetoken(remtok,trackpos):
                     print('sending back to field',sendback[0])
                     col=b[remtok[1][0]][remtok[1][1]][-1]
                     print('tile color',col)
-                    b[remtok[1][0]][remtok[1][1]]='pla'+remtok[0][0]+col
+                    b[remtok[1][0]][remtok[1][1]]='pla'+remtok[0]+col
                     print('field is now',b[remtok[1][0]][remtok[1][1]])
                     for tra in track:
                         if tra[0]==trackpos:

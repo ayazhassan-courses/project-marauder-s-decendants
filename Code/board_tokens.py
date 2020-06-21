@@ -177,6 +177,13 @@ def field_to_track(token,dice,start):
 def in_track_move(token,dice): #need to make changes
     for i in data_structures.Players:
         # find the token which was selected in the dict
+        print(i[home])
+        if i['home']!=[]:
+            for h in i['home']:
+                if h[0]==token[0]:
+                    h=towardshome(token,dice,i['home'])
+                    print('home token',h)
+                    return h
         if i['playcolor']==data_structures.defturn:
                 print('player',i['playcolor'])
                 # if u found the player dict, than search for it in token on track
@@ -209,19 +216,26 @@ def in_track_move(token,dice): #need to make changes
                             destination=b[temp[0][0]][temp[0][1]]
                             i['tokens_on_track'][t]=((i['tokens_on_track'][t][0][0],i['tokens_on_track'][t][0][1],i['tokens_on_track'][t][0][2]+dice),temp[0],circlst)
                             return (destination,temp[0],temp)
-
+                
 def towardshome(token,dice,loc):
     destination=()
     temp=()
     for i in data_structures.homelanes:
+        print('check')
         if i[0]==token[0][0]:
             for j in data_structures.Players:
                 if j['playcolor'][3] == token[0][0]:
                     pl = j
-            for j in range(len(pl['tokens_on_track'])):
-                if pl['tokens_on_track'][j][0][0] == token[0]:
-                    tbr = j
-                    hompos = pl['tokens_on_track'][j][2]
+            if j[home]!=[]:
+                for h in i['home']:
+                    if h[0]==token[0]:
+                        uncertain=h[0]
+                        print('home token',h)
+            else:
+                for j in range(len(pl['tokens_on_track'])):
+                    if pl['tokens_on_track'][j][0][0] == token[0]:
+                        tbr = j
+                        hompos = pl['tokens_on_track'][j][2]
             print(pl['tokens_on_track'], 'is token on track that has to be emptied later')
             homestart=i[1][0]
             homefin=i[1][1]
@@ -399,7 +413,6 @@ def move(start,dicee):
         print('not in field') #nothing returned here
         destination=in_track_move(token,dicee)
         print(' we are checking for destination', destination)
-    if destination!=[]: #swapping of token
         if destination=='end the game':
             data_structures.end=True
             winner=data_structures.defturn
@@ -407,7 +420,7 @@ def move(start,dicee):
         if destination=='not possible':
             print('this is not possible, number greater than available tiles')
             pass ###########
-
+    if destination!=[]: #swapping of token
         col=destination[0][-1] #detecting error here 
         if 's' in destination[0]: #star position
             col='s'+col
