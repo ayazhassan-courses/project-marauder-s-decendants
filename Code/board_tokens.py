@@ -222,6 +222,7 @@ def towardshome(token,dice,loc):
     temp=()
     hompos=[]
     uncertain=[]
+    tbr = ()
     locx=loc[0]
     locy=loc[1]
     for_outhome=()

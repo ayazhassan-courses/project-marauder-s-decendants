@@ -92,11 +92,13 @@ def game():
                                             push(data_structures.dice_roll2,pop(data_structures.dice_roll))
                                     if v=='not possible':
                                         valid=True 
-                                        pop(data_structures.dice_roll2)
+                                        while is_empty(data_structures.dice_roll2)==False:
+                                            pop(data_structures.dice_roll2)
+                                        print('you cannot make a move')
                                     if v==False:
                                         if pl['tokens_on_track']==[]:
                                             valid=True 
-                                            if is_empty(data_structures.dice_roll2)==False:
+                                            while is_empty(data_structures.dice_roll2)==False:
                                                 pop(data_structures.dice_roll2)
                                             print('you cannot make a move')
                                         else:
