@@ -254,6 +254,7 @@ def towardshome(token,dice,loc):
                                 pl['home'].pop(i)
                         pl['outofhome'].append(for_outhome)
                         print('token ', token[0], 'went home!')
+                        return 'token won'
                         # for to in range(1, len(track[hompos])):
                         #     if track[hompos][to][0] == track[0]:
                         #         track[hompos].pop(to)
@@ -279,6 +280,7 @@ def towardshome(token,dice,loc):
                                 pl['home'].pop(i)
                         pl['outofhome'].append(for_outhome)
                         print('token ', token[0], 'went home!')
+                        return 'token won'
                         # for to in range(1, len(track[hompos])):
                         #     if track[hompos][to][0] == track[0]:
                         #         track[hompos].pop(to)
@@ -305,7 +307,7 @@ def towardshome(token,dice,loc):
                                 pl['home'].pop(i)
                         pl['outofhome'].append(for_outhome)
                         print('token ', token[0], 'went home!')
-                      
+                        return 'token won'
                         # for to in range(1, len(track[hompos])):
                         #     if track[hompos][to][0] == track[0]:
                         #         track[hompos].pop(to)
@@ -330,6 +332,7 @@ def towardshome(token,dice,loc):
                                 pl['home'].pop(i)
                         pl['outofhome'].append(for_outhome)
                         print('token ', token[0], 'went home!')
+                        return 'token won'
                         # for to in range(1, len(track[hompos])):
                         #     if track[hompos][to][0] == track[0]:
                         #         track[hompos].pop(to)
@@ -447,6 +450,8 @@ def move(start,dicee):
         if destination=='not possible':
             print('this is not possible, number greater than available tiles')
             return 'not possible' ###########
+        if destination=='token won':
+            return 'token won'
     if destination!=[]: #swapping of token
         col=destination[0][-1] #detecting error here 
         if 's' in destination[0]: #star position

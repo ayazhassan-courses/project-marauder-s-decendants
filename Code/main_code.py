@@ -81,7 +81,7 @@ def game():
                                     #     break
                                     pl=findplayer()
                                     print('six condition',v,pl['tokens_on_track'])
-                                    if v=='rollagain':
+                                    if v=='rollagain' or v=='token won':
                                         dice()
                                         push(data_structures.dice_roll2,pop(data_structures.dice_roll))
                                     if v=='not possible':
