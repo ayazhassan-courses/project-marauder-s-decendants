@@ -356,8 +356,6 @@ def towardshome(token,dice,loc):
             destination=b[temp[0]][temp[1]]
             print(destination, 'is destination for home')
             info=pl['home'] 
-            if plawon(token)==True:
-                return('end the game')
             return (destination,temp,info)
 def extract_token_from_str(token,string):
     token = 'pla' + token
@@ -451,6 +449,31 @@ def move(start,dicee):
             print('this is not possible, number greater than available tiles')
             return 'not possible' ###########
         if destination=='token won':
+            newtoken='pla'+token[0]
+            string5 = b[start[0]][start[1]]
+            lst = string5.split('-')
+            for i in lst:
+                if i[:5] == newtoken:
+                    # extracted = i[:5]
+                    if len(i) >5:
+                        lst.remove(i)
+                        if lst == []:
+                            lst.append(i[5:])
+                        else:
+                            lst[-1] = lst[-1]+(i[5:])
+                    else:
+                        lst.remove(i)
+            # print('lst',lst)
+            new_str = ''
+            if len(lst) == 1:
+                b[start[0]][start[1]] = lst[0]
+            else:
+                for i in lst:
+                    new_str = new_str + '-' + i
+                if new_str[0] == '-':
+                    new_str = new_str[1:]
+                b[start[0]][start[1]] = new_str 
+            print('what was left',b[start[0]][start[1]])
             return 'token won'
     if destination!=[]: #swapping of token
         col=destination[0][-1] #detecting error here 

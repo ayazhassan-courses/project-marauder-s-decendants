@@ -81,9 +81,15 @@ def game():
                                     #     break
                                     pl=findplayer()
                                     print('six condition',v,pl['tokens_on_track'])
-                                    if v=='rollagain' or v=='token won':
+                                    if v=='rollagain': 
                                         dice()
                                         push(data_structures.dice_roll2,pop(data_structures.dice_roll))
+                                    if v=='token won':
+                                        if plawon()==True:
+                                            data_structures.end=True
+                                        else:
+                                            dice()
+                                            push(data_structures.dice_roll2,pop(data_structures.dice_roll))
                                     if v=='not possible':
                                         valid=True 
                                         pop(data_structures.dice_roll2)
@@ -182,7 +188,7 @@ def game():
                 if six_count==3:
                     while is_empty(data_structures.dice_roll2)==False:
                         pop(data_structures.dice_roll2) 
-                    data_structures.dice_roll2.append('you got 3 sixes, your turn will be passed')
+                    push(data_structures.dice_roll2,'you got 3 sixes, your turn will be passed')
                     
             pygame.display.update()
             clock.tick(60)
