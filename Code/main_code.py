@@ -90,7 +90,8 @@ def game():
                                     if v==False:
                                         if pl['tokens_on_track']==[]:
                                             valid=True 
-                                            pop(data_structures.dice_roll2)
+                                            if is_empty(data_structures.dice_roll2)==False:
+                                                pop(data_structures.dice_roll2)
                                             print('you cannot make a move')
                                         else:
                                             print('try again')
@@ -104,8 +105,10 @@ def game():
                                     print('Wrong Move!',b[clickarg[0][0]][clickarg[0][1]])
                             else:
                                 print('your turn will be passed')
-                                data_structures.dice_roll2=[]
-                                data_structures.dice_roll=[]
+                                while is_empty(data_structures.dice_roll2)==False:
+                                    pop(data_structures.dice_roll2)
+                                while is_empty(data_structures.dice_roll)==False:
+                                    pop(data_structures.dice_roll)
                                 valid=True
                                 
                         else:
