@@ -137,13 +137,11 @@ def removetoken(remtok,trackpos):
                     print('tile color',col)
                     b[remtok[1][0]][remtok[1][1]]='pla'+remtok[0][0]+col
                     print('field is now',b[remtok[1][0]][remtok[1][1]])
-                    break
-            for tra in track:
-                if tra[0]==trackpos:
-                    print('remove',remtok,'from',tra)
-                    tra.remove(remtok)
-                    break
-        break
+                    for tra in track:
+                        if tra[0]==trackpos:
+                            print('remove',remtok,'from',tra)
+                            tra.remove(remtok)
+                            return
 def oust(destination,temp,token):
     print('we are going to check oust in this',temp)
     for i in Players:

@@ -334,7 +334,7 @@ def move(start,dice):
                 print('changed destination',b[destination[1][0]][destination[1][1]])
             else:
                 b[destination[1][0]][destination[1][1]]='pla'+token[0]+col
-                dice()
+                # dice()
                 print('changed destination',b[destination[1][0]][destination[1][1]])
         else:
             b[destination[1][0]][destination[1][1]]='pla'+token[0]+destination[0]
