@@ -45,7 +45,7 @@ def game():
             title_textbox.center = ((data_f.screenwidth/2),(data_f.screenheight/2))
             screen.blit(title_text, title_textbox) 
             p, p2=button('Play Again',(data_f.screenwidth/2)-250,(data_f.screenheight/2)+50,150,50,data_f.boardgreen,screen, 'menu')
-            print(pygame.mouse.get_pos())
+            # print(pygame.mouse.get_pos())
             if p==True and p2 == False:
                 end=False
             q, q2=button('Quit',(data_f.screenwidth/2)+50,(data_f.screenheight/2)+50,150,50,data_f.boardred,screen, 'menu')

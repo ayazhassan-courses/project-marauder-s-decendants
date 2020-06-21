@@ -63,8 +63,8 @@ def game():
                     if get_colrows(mouse)!=-1: #checks if either board is clicked or the knight needs to be confirmed with ifrah
                         tile=get_colrows(mouse)
                         clickarg.append(tile)
-                        print(tile,clickarg)
-                        print('mouse',mouse)
+                        # print(tile,clickarg)
+                        # print('mouse',mouse)
                         # extra variable tile maybe unnecessary
                     else:
                         print('click on the knight!')
@@ -74,13 +74,13 @@ def game():
                             if top(data_structures.dice_roll2)!='you got 3 sixes, your turn will be passed':
                                 if check_valid(clickarg[0])==True:
                                     # may need to implement check wvalid everywhere
-                                    print('clickarg',clickarg)
+                                    # print('clickarg',clickarg)
                                     v=move(clickarg[0],top(data_structures.dice_roll2))
                                     # if v == False:
                                     #     valid== True
                                     #     break
                                     pl=findplayer()
-                                    print('six condition',v,pl['tokens_on_track'])
+                                    # print('six condition',v,pl['tokens_on_track'])
                                     if v=='rollagain': 
                                         dice()
                                         push(data_structures.dice_roll2,pop(data_structures.dice_roll))
@@ -158,7 +158,7 @@ def game():
             title_textbox.center = ((data_f.screenwidth/2),(data_f.screenheight/2))
             screen.blit(title_text, title_textbox) 
             p, p2=button('Play Again',(data_f.screenwidth/2)-250,(data_f.screenheight/2)+50,150,50,data_f.boardgreen,screen, 'menu')
-            print(pygame.mouse.get_pos())
+            # print(pygame.mouse.get_pos())
             q, q2=button('Quit',(data_f.screenwidth/2)+50,(data_f.screenheight/2)+50,150,50,data_f.boardred,screen, 'menu')
             pygame.display.update()
         else:
@@ -186,7 +186,7 @@ def game():
                 while is_empty(data_structures.dice_roll)==False:
                     x = pop(data_structures.dice_roll)
                     push(data_structures.dice_roll2, x)
-                print('dice stack 2', data_structures.dice_roll2)
+                # print('dice stack 2', data_structures.dice_roll2)
                 if six_count==3:
                     while is_empty(data_structures.dice_roll2)==False:
                         pop(data_structures.dice_roll2) 

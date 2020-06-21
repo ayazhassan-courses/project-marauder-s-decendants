@@ -131,7 +131,7 @@ def check_valid(start):
         for character in range(len(selectedtoken)):
             if selectedtoken[character]=='-': #if more than one token is present, they will be identified and stored in plaspot too
                 plaspot.append((selectedtoken[character+1:character+6],character))
-        print('check valid plaspot',plaspot)
+        # print('check valid plaspot',plaspot)
         for ch in plaspot: 
             if ch[0][:4]==data_structures.defturn:
                 return True
@@ -150,69 +150,69 @@ def seetokensinfield(pla,colrow):
         if i[1]==colrow:
             return True    
 def field_to_track(token,dice,start):
-    print('dice',dice)
+    # print('dice',dice)
     if dice!=6 and seetokensinfield(findplayer(),start)==True:
         return 'you need a six'
     for i in data_structures.Players:
         if i['playcolor']==data_structures.defturn:
-                print('player',i['playcolor'])
+                # print('player',i['playcolor'])
             # if i['tokens_in_field']!=[]:
                 for t in range(len(i['tokens_in_field'])):
                     # print(i['tokens_in_field'],token[0])
                     if i['tokens_in_field'][t][0]==token[0]:
                         pos=t
                         tokinfo=i['tokens_in_field'][t]
-                        print('tokinfo',tokinfo)
+                        # print('tokinfo',tokinfo)
                         for s in data_structures.stops:
                             if len(s[1])>1 and s[1][0]==token[0][0]:
-                                print('stop')
+                                # print('stop')
                                 track[s[0]].append(tokinfo) #tokinfo contains what token it is and its original position
                                 temp=track[s[0]] #temp has all the information of the tile. temp[0] has the coordinates of the tile. s[0] is the tile number which is a stop
-                                print('temp',temp)
+                                # print('temp',temp)
                                 destination=b[temp[0][0]][temp[0][1]]
                                 i['tokens_on_track'].append((i['tokens_in_field'].pop(pos),temp[0],s[0])) 
-                                print('when it moves field to track, tokens in track becomes',i['tokens_on_track'])
+                                # print('when it moves field to track, tokens in track becomes',i['tokens_on_track'])
                                 return (destination,temp[0],temp)
     return ('not in field')
 def in_track_move(token,dice): #need to make changes
     for i in data_structures.Players:
         # find the token which was selected in the dict
-        print(i['home'])
+        # print(i['home'])
         if i['home']!=[]:
             for h in i['home']:
                 if h[0]==token[0]:
                     h=towardshome(token,dice,h[1])
-                    print('home token',h)
+                    # print('home token',h)
                     return h
         if i['playcolor']==data_structures.defturn:
-                print('player',i['playcolor'])
+                # print('player',i['playcolor'])
                 # if u found the player dict, than search for it in token on track
                 for t in range(len(i['tokens_on_track'])):
                     # if the color and number match then store the info of the token in tokinfo
                     # circlist updates the tile number
                     if i['tokens_on_track'][t][0][0]==token[0]:
                             tokinfo=i['tokens_on_track'][t]
-                            print('tokinfo',tokinfo)
+                            # print('tokinfo',tokinfo)
                             circlst=tokinfo[2]
                             oldtile=tokinfo[2]
                             for d in range(dice):
                                     # print('the number',d,'the dice',dice)
                                     circlst+=1
-                                    print('updating circlst',circlst)
+                                    # print('updating circlst',circlst)
                                     if circlst>=48:
                                         # track[circlst].append(tokinfo) #error fixed
                                         circlst=0
                                     if i['tokens_on_track'][t][0][2]+d+1==46 and i['ousted']==True: 
                                         h=towardshome(token,dice-d-1,track[circlst][0])
-                                        print('home token',h)
+                                        # print('home token',h)
                                         return h
                             temp=track[circlst]
-                            print('track[oldtile]',track[oldtile])
-                            print('track[circlst]',track[circlst])
+                            # print('track[oldtile]',track[oldtile])
+                            # print('track[circlst]',track[circlst])
                             tilestraversed=tokinfo[0][2]+dice
                             track[oldtile].remove(tokinfo[0])
                             track[circlst].append((tokinfo[0][0],tokinfo[0][1],tilestraversed))
-                            print('temp hopeful',temp) 
+                            # print('temp hopeful',temp) 
                             destination=b[temp[0][0]][temp[0][1]]
                             i['tokens_on_track'][t]=((i['tokens_on_track'][t][0][0],i['tokens_on_track'][t][0][1],i['tokens_on_track'][t][0][2]+dice),temp[0],circlst)
                             return (destination,temp[0],temp)
@@ -227,7 +227,7 @@ def towardshome(token,dice,loc):
     locy=loc[1]
     for_outhome=()
     for i in data_structures.homelanes:
-        print('check')
+        # print('check')
         if i[0]==token[0][0]:
             for j in data_structures.Players:
                 if j['playcolor'][3] == token[0][0]:
@@ -236,13 +236,13 @@ def towardshome(token,dice,loc):
                 for h in i['home']:
                     if h[0]==token[0]:
                         uncertain=h[0]
-                        print('home token',h)
+                        # print('home token',h)
             else:
                 for j in range(len(pl['tokens_on_track'])):
                     if pl['tokens_on_track'][j][0][0] == token[0]:
                         tbr = j
                         hompos = pl['tokens_on_track'][j][2]
-                        print(pl['tokens_on_track'], 'is token on track that has to be emptied later')
+                        # print(pl['tokens_on_track'], 'is token on track that has to be emptied later')
             homestart=i[1][0]
             homefin=i[1][1]
             if homestart[0]==homefin[0]:
@@ -350,12 +350,12 @@ def towardshome(token,dice,loc):
                                     if track[hompos][to][0] == track[0]:
                                         track[hompos].pop(to)
             
-            print(temp, 'is temp for home')
-            print(loc, 'loc is for home')
-            print(token, 'token for home')
-            print(pl['tokens_on_track'], 'is token on track after emptying')
+            # print(temp, 'is temp for home')
+            # print(loc, 'loc is for home')
+            # print(token, 'token for home')
+            # print(pl['tokens_on_track'], 'is token on track after emptying')
             destination=b[temp[0]][temp[1]]
-            print(destination, 'is destination for home')
+            # print(destination, 'is destination for home')
             info=pl['home'] 
             return (destination,temp,info)
 def extract_token_from_str(token,string):
@@ -400,7 +400,7 @@ def move(start,dicee):
     pos=()
     plaspot=[]
     selectedtoken=b[start[0]][start[1]]
-    print('selectedtoken',selectedtoken)
+    # print('selectedtoken',selectedtoken)
     destination=[]
     if len(selectedtoken)<2:
         print('invalid')
@@ -428,9 +428,9 @@ def move(start,dicee):
             pass
     else: #only one token 
         if selectedtoken[:4]==data_structures.defturn:
-            print('valid selection')
+            # print('valid selection')
             token=(selectedtoken[3:5],'')
-            print('token',token)
+            # print('token',token)
         else:
             pass
             # print(token)
@@ -441,7 +441,7 @@ def move(start,dicee):
     if destination=='not in field': 
         print('not in field') #nothing returned here
         destination=in_track_move(token,dicee)
-        print(' we are checking for destination', destination)
+        # print(' we are checking for destination', destination)
         if destination=='end the game':
             data_structures.end=True
             winner=data_structures.defturn
@@ -474,14 +474,14 @@ def move(start,dicee):
                 if new_str[0] == '-':
                     new_str = new_str[1:]
                 b[start[0]][start[1]] = new_str 
-            print('what was left',b[start[0]][start[1]])
+            # print('what was left',b[start[0]][start[1]])
             return 'token won'
     if destination!=[]: #swapping of token
         col=destination[0][-1] #detecting error here 
         if 's' in destination[0]: #star position
             col='s'+col
-            print('col',col)
-            print('wat is going in',destination[0])
+            # print('col',col)
+            # print('wat is going in',destination[0])
         newtoken='pla'+token[0]
         string5 = b[start[0]][start[1]]
         lst = string5.split('-')
@@ -506,19 +506,19 @@ def move(start,dicee):
             if new_str[0] == '-':
                 new_str = new_str[1:]
             b[start[0]][start[1]] = new_str 
-        print('what was left',b[start[0]][start[1]])
+        # print('what was left',b[start[0]][start[1]])
         if len(destination[0])>4:
             ous=oust(destination[0],destination[2],token)
             if ous==False:
                 b[destination[1][0]][destination[1][1]]='pla'+token[0]+'-'+destination[0]
-                print('changed destination',b[destination[1][0]][destination[1][1]])
+                # print('changed destination',b[destination[1][0]][destination[1][1]])
             else:
                 b[destination[1][0]][destination[1][1]]='pla'+token[0]+col
-                print('changed destination',b[destination[1][0]][destination[1][1]])
+                # print('changed destination',b[destination[1][0]][destination[1][1]])
                 return 'rollagain'
         else:
             b[destination[1][0]][destination[1][1]]='pla'+token[0]+destination[0]
-            print('changed destination',b[destination[1][0]][destination[1][1]])
+            # print('changed destination',b[destination[1][0]][destination[1][1]])
        
         # pos = 0
         # newtoken='pla'+token[0]

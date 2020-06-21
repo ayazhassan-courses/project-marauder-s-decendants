@@ -123,42 +123,42 @@ oust someone already there unless stop
 #     return new_pos
 def removetoken(remtok,trackpos):
     for i in Players:
-        print('oust token',remtok)
-        print('checking color wth',i['playcolor'][3],remtok[0][0][0])
+        # print('oust token',remtok)
+        # print('checking color wth',i['playcolor'][3],remtok[0][0][0])
         if i['playcolor'][3]==remtok[0][0][0]:
             for tokintrack in range(len(i['tokens_on_track'])):
-                print('checking track',i['tokens_on_track'][tokintrack][0][0],'to find',remtok[0])
+                # print('checking track',i['tokens_on_track'][tokintrack][0][0],'to find',remtok[0])
                 if i['tokens_on_track'][tokintrack][0][0]==remtok[0]:
                     i['tokens_on_track'][tokintrack]=((i['tokens_on_track'][tokintrack][0][0],i['tokens_on_track'][tokintrack][0][1],0),i['tokens_on_track'][tokintrack][1],0)
                     sendback=i['tokens_on_track'].pop(tokintrack)
                     i['tokens_in_field'].append(sendback[0])
-                    print('sending back to field',sendback[0])
+                    # print('sending back to field',sendback[0])
                     col=b[remtok[1][0]][remtok[1][1]][-1]
-                    print('tile color',col)
+                    # print('tile color',col)
                     b[remtok[1][0]][remtok[1][1]]='pla'+remtok[0]+col
-                    print('field is now',b[remtok[1][0]][remtok[1][1]])
+                    # print('field is now',b[remtok[1][0]][remtok[1][1]])
                     for tra in track:
                         if tra[0]==trackpos:
-                            print('remove',remtok,'from',tra)
+                            # print('remove',remtok,'from',tra)
                             tra.remove(remtok)
                             return
 def oust(destination,temp,token):
-    print('we are going to check oust in this',temp)
+    # print('we are going to check oust in this',temp)
     for i in Players:
         if i['playcolor']==defturn:
             player=i
     if len(temp)>2:
         for i in range(1,len(temp)):
-            print('the token we are checking for oust',temp[i][0])
+            # print('the token we are checking for oust',temp[i][0])
             if temp[i][0][0]==token[0][0]:
                 comingtok=temp[i][0]
-                print('this is the killer',comingtok)
+                # print('this is the killer',comingtok)
                 if 's' not in destination:
                     for j in range(1,len(temp)):
-                        print('temp[j][0][0]',temp[j][0][0])
+                        # print('temp[j][0][0]',temp[j][0][0])
                         if temp[j][0][0]!=comingtok[0][0]:
-                            print('this will be ousted (temp[j])',temp[j][0][0],'by',comingtok[0][0],temp)
-                            print(temp[j])
+                            # print('this will be ousted (temp[j])',temp[j][0][0],'by',comingtok[0][0],temp)
+                            # print(temp[j])
                             removetoken(temp[j],temp[0])
                             player['ousted'] = True
                             return True
@@ -188,7 +188,7 @@ def plawon(token):
         if i['playcolor']==defturn:
             player=i
             if player['tokens_won']==4:
-                print('player '+token[0][0]+' won!')
+                # print('player '+token[0][0]+' won!')
                 return True
 
 # def move_token(player, spaces, track):   
