@@ -1,4 +1,4 @@
-7#more files to keep clutter low in main file
+#7 more files to keep clutter low in main file
 import pygame
 import random
 import data_f
@@ -76,18 +76,15 @@ def game():
                                     # may need to implement check wvalid everywhere
                                     # print('clickarg',clickarg)
                                     v=move(clickarg[0],top(data_structures.dice_roll2))
-                                    # if v == False:
-                                    #     valid== True
-                                    #     break
                                     pl=findplayer()
                                     # print('six condition',v,pl['tokens_on_track'])
                                     if v=='rollagain': 
                                         dice()
                                         push(data_structures.dice_roll2,pop(data_structures.dice_roll))
                                     if v=='token won':
-                                        if plawon()==True:
-                                            data_structures.end=True
-                                        else:
+                                        # if plawon()==True:
+                                        #     data_structures.end=True
+                                        # else:
                                             dice()
                                             push(data_structures.dice_roll2,pop(data_structures.dice_roll))
                                     if v=='not possible':
@@ -164,7 +161,6 @@ def game():
         else:
             screen.fill(data_f.screencolor)
             gamestate()
-            # need to revise button function
             dicebutton, display =button('Roll Dice',50,50,100,50,data_f.boardred, 'dice')
             if dicebutton and display:
                 if is_empty(data_structures.dice_roll)==False and top(data_structures.dice_roll)!=6:
@@ -195,7 +191,6 @@ def game():
             pygame.display.update()
             clock.tick(60)
 def button(text,x,y,w,h,color,screentype,function=None):
-    # the variable named function not needed and revise the button function
     mouse=pygame.mouse.get_pos()
     press=pygame.mouse.get_pressed()
     pygame.draw.rect(screen,color,(x,y,w,h))
@@ -218,32 +213,8 @@ def button(text,x,y,w,h,color,screentype,function=None):
     screen.blit(start_text, start_textbox) 
     return False, display
 
-# def mainmenu():
-#     menu=True
-#     while menu:
-#         for event in pygame.event.get():
-#             if event.type==pygame.QUIT:
-#                 pygame.quit()
-#         screen.fill(data_f.screencolor)
-#         screen.blit(pygame.image.load(data_f.titleimage),((data_f.screenwidth/2)-250,(data_f.screenheight/2)-250))
-#         title = pygame.font.Font(data_f.titlefont,data_f.titlefsize)
-#         title_text, title_textbox = texto(data_f.title, title)
-#         title_textbox.center = ((data_f.screenwidth/2),(data_f.screenheight/2))
-#         screen.blit(title_text, title_textbox)
-#         # pygame.Rect(450,600,50,50)
-#         p, p2=button('Play',(data_f.screenwidth/2)-250,(data_f.screenheight/2)+50,150,50,data_f.boardgreen,screen, 'menu')
-#         if p==True and p2 == False:
-#             return True
-#         q, q2=button('Quit',(data_f.screenwidth/2)+50,(data_f.screenheight/2)+50,150,50,data_f.boardred,screen, 'menu')
-#         if q==True and q2 == False:
-#             return False
-#         pygame.display.update()
-
 def m():
-    # mainmenu needs to be fixed
-    # if mainmenu()==True:
     game()
-    # else:
     pygame.quit()
 if __name__=='__main__':
     m()

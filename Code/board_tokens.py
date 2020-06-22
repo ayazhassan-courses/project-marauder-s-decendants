@@ -35,11 +35,7 @@ def callboard(): #visually draws board
             else:
                 c=b[i][j]
                 pygame.draw.rect(screen,colors(c),r)
-                # data_structures.bdata.append((b[i][j],(i*width)+data_f.boardstartx,(j*height)+data_f.boardstarty))
-    # for i in data_structures.Players:
-    #     lstofplayers=i[0].get('tokens_in_field')
-    #     color=i[1]
-    #     drawtoken(screen,color,x,y)
+               
 def separator():
     width=data_f.boardwidthtiles
     height=data_f.boardheighttiles
@@ -48,7 +44,7 @@ def separator():
         w=i*width
         pygame.draw.line(screen,data_f.screencolor,(data_f.boardstartx+w,data_f.boardstarty),(data_f.boardstartx+w,data_f.boardstarty+data_f.boardheight),2)
         pygame.draw.line(screen,data_f.screencolor,(data_f.boardstartx,h+data_f.boardstarty),(data_f.boardstartx+data_f.boardwidth,h+data_f.boardstarty),2)
-def loadtokens(): #loading token images into dictionary called token                 #use this to fix the multiple tokens on one spot maybe
+def loadtokens(): #loading token images into dictionary called token                 
     t=['plar','plab','plag','play'] #pla (= player) + r/b/g/y (for color)
     for i in t:
         if i=='plar':
@@ -62,7 +58,7 @@ def loadtokens(): #loading token images into dictionary called token            
 
         if i=='play':
             token[i]=pygame.transform.scale(pygame.image.load(data_f.yellow_token),(data_f.boardwidthtiles,data_f.boardheighttiles))
-def drawtoken(): #reads board and draws token where 'plar' etc are             #use this to fix the multiple tokens on one spot maybe
+def drawtoken(): #reads board and draws token where 'plar' etc are             
     width=data_f.boardwidthtiles
     height=data_f.boardheighttiles
     for i in range(len(b)):
@@ -156,7 +152,6 @@ def field_to_track(token,dice,start):
     for i in data_structures.Players:
         if i['playcolor']==data_structures.defturn:
                 # print('player',i['playcolor'])
-            # if i['tokens_in_field']!=[]:
                 for t in range(len(i['tokens_in_field'])):
                     # print(i['tokens_in_field'],token[0])
                     if i['tokens_in_field'][t][0]==token[0]:
@@ -200,7 +195,6 @@ def in_track_move(token,dice): #need to make changes
                                     circlst+=1
                                     # print('updating circlst',circlst)
                                     if circlst>=48:
-                                        # track[circlst].append(tokinfo) #error fixed
                                         circlst=0
                                     if i['tokens_on_track'][t][0][2]+d+1==46 and i['ousted']==True: 
                                         h=towardshome(token,dice-d-1,track[circlst][0])
@@ -256,9 +250,6 @@ def towardshome(token,dice,loc):
                         pl['outofhome'].append(for_outhome)
                         print('token ', token[0], 'went home!')
                         return 'token won'
-                        # for to in range(1, len(track[hompos])):
-                        #     if track[hompos][to][0] == track[0]:
-                        #         track[hompos].pop(to)
                         # it will go home
                     elif locy+dice>homefin[1]+1:
                         # greater number than home 
@@ -282,9 +273,6 @@ def towardshome(token,dice,loc):
                         pl['outofhome'].append(for_outhome)
                         print('token ', token[0], 'went home!')
                         return 'token won'
-                        # for to in range(1, len(track[hompos])):
-                        #     if track[hompos][to][0] == track[0]:
-                        #         track[hompos].pop(to)
                         # it will go home
                     elif locy-dice<homefin[1]+1:
                         # greater number than home 
@@ -309,9 +297,6 @@ def towardshome(token,dice,loc):
                         pl['outofhome'].append(for_outhome)
                         print('token ', token[0], 'went home!')
                         return 'token won'
-                        # for to in range(1, len(track[hompos])):
-                        #     if track[hompos][to][0] == track[0]:
-                        #         track[hompos].pop(to)
 
                     elif locx+dice>homefin[0]+1:
                         # greater number than home 
@@ -334,9 +319,6 @@ def towardshome(token,dice,loc):
                         pl['outofhome'].append(for_outhome)
                         print('token ', token[0], 'went home!')
                         return 'token won'
-                        # for to in range(1, len(track[hompos])):
-                        #     if track[hompos][to][0] == track[0]:
-                        #         track[hompos].pop(to)
                         # it will go home
                     elif locx-dice<homefin[0]+1:
                         # greater number than home 
@@ -349,51 +331,11 @@ def towardshome(token,dice,loc):
                                 for to in range(1, len(track[hompos])):
                                     if track[hompos][to][0] == track[0]:
                                         track[hompos].pop(to)
-            
-            # print(temp, 'is temp for home')
-            # print(loc, 'loc is for home')
-            # print(token, 'token for home')
-            # print(pl['tokens_on_track'], 'is token on track after emptying')
             destination=b[temp[0]][temp[1]]
             # print(destination, 'is destination for home')
             info=pl['home'] 
             return (destination,temp,info)
-def extract_token_from_str(token,string):
-    token = 'pla' + token
-    pos = 0
-    while pos+5 != len(string):
-        Slice = string[pos:pos+5]
-        if Slice == token:
-            string = string[:pos] +string[pos+6:] #to remove the slice from original string
-            return Slice
-        else:
-            pos+= 1
 
-def add_token_to_str(token,string):
-    token = 'pla' + token
-    if string != 'sr':
-        string = string + '-' + token
-    else:
-        string = token+string
-    return string
-def extract_token_from_str(token,string):
-    token = 'pla' + token
-    extracted = ''
-    lst = string.split('-')
-    for i in lst:
-        if i[:5] == token:
-            extracted = i[:5]
-            if len(i) >5:
-                lst.remove(i)
-                lst.append(i[5:])
-            else:
-                lst.remove(i)
-    new_str = ''
-    for i in lst:
-        new_str = new_str + '-' + i
-    if new_str[0] == '-':
-        new_str = new_str[1:]
-    return extracted,new_str
 def move(start,dicee):
     tokinfo=()
     token=() #first argument is the colour and the number of the token, second is the position in the selectedtoken 
@@ -410,7 +352,6 @@ def move(start,dicee):
         for character in range(len(selectedtoken)):
             if selectedtoken[character]=='-': #if more than one token is present, they will be identified and stored in plaspot too
                 plaspot.append((selectedtoken[character+1:character+6],character))
-        # print('plaspot',plaspot)
         # plaspot is a nested tuple containing multiple tokens on a tile
         for ch in plaspot: #nested tuple 
             # count is for to keep track if the selected place has the token of the player
@@ -455,7 +396,6 @@ def move(start,dicee):
             lst = string5.split('-')
             for i in lst:
                 if i[:5] == newtoken:
-                    # extracted = i[:5]
                     if len(i) >5:
                         lst.remove(i)
                         if lst == []:
@@ -464,7 +404,6 @@ def move(start,dicee):
                             lst[-1] = lst[-1]+(i[5:])
                     else:
                         lst.remove(i)
-            # print('lst',lst)
             new_str = ''
             if len(lst) == 1:
                 b[start[0]][start[1]] = lst[0]
@@ -487,7 +426,6 @@ def move(start,dicee):
         lst = string5.split('-')
         for i in lst:
             if i[:5] == newtoken:
-                # extracted = i[:5]
                 if len(i) >5:
                     lst.remove(i)
                     if lst == []:
@@ -496,7 +434,6 @@ def move(start,dicee):
                         lst[-1] = lst[-1]+(i[5:])
                 else:
                     lst.remove(i)
-        # print('lst',lst)
         new_str = ''
         if len(lst) == 1:
             b[start[0]][start[1]] = lst[0]
@@ -520,43 +457,6 @@ def move(start,dicee):
             b[destination[1][0]][destination[1][1]]='pla'+token[0]+destination[0]
             # print('changed destination',b[destination[1][0]][destination[1][1]])
        
-        # pos = 0
-        # newtoken='pla'+token[0]
-        # while pos+5 != len(b[start[0]][start[1]]):
-        #     Slice = b[start[0]][start[1]][pos:pos+5]
-        #     if Slice == newtoken:
-        #         if len(b[start[0]][start[1]]) > len(token[0])+2:
-        #             b[start[0]][start[1]] = b[start[0]][start[1]][5:]
-        #         elif  b[start[0]][start[1]][pos+5]=='-': #if this isn't the last token
-        #             b[start[0]][start[1]] = b[start[0]][start[1]][:pos] +b[start[0]][start[1]][pos+6:]
-        #         else:
-        #             b[start[0]][start[1]] = b[start[0]][start[1]][:pos-1] + b[start[0]][start[1]][pos+5:]
-        #         print('what was left',b[start[0]][start[1]])
-        #         break
-        #     else:
-        #         pos+=1
-
-        #     if ous == False:
-        #     # if destination[0][:4]==selectedtoken[:4] or 's' in col:
-        #         # need to fix this
-        #         b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+'-'+destination[0]
-        #         # b[destination[1][0]][destination[1][1]]=destination[0][:-2]+'-'+selectedtoken[:5]+col #not sure about the col position
-        #         print('changed destination',b[destination[1][0]][destination[1][1]])
-        #     else:
-        #         b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
-        #         print('token ousted',b[destination[1][0]][destination[1][1]])
-        #     #else statement from hana's code: outset, this is where the token will be killed and removed from the track    
-        # else:
-        #     if '-' not in selectedtoken:
-        #         b[destination[1][0]][destination[1][1]]=selectedtoken[:5]+col
-        #     else:
-        #         b[destination[1][0]][destination[1][1]]=selectedtoken[token[1]+1:token[1]+6]+col
-        #         print('destination changed',b[destination[1][0]][destination[1][1]])
-        # if '-' in selectedtoken:
-        #     b[start[0]][start[1]]=selectedtoken[:token[1]+1]+selectedtoken[token[1]+6:]
-        #     print('from',selectedtoken,'what was left',b[start[0]][start[1]])
-        # else:
-        #     b[start[0]][start[1]]=selectedtoken[5:] 
-        #     print('what was left',b[start[0]][start[1]])
+        
 
 

@@ -56,7 +56,6 @@ def game():
             screen.fill(data_f.screencolor)
         pygame.display.update()
 def button(text,x,y,w,h,color,screentype,function=None):
-    # the variable named function not needed and revise the button function
     mouse=pygame.mouse.get_pos()
     press=pygame.mouse.get_pressed()
     pygame.draw.rect(screen,color,(x,y,w,h))
@@ -79,10 +78,7 @@ def button(text,x,y,w,h,color,screentype,function=None):
     screen.blit(start_text, start_textbox) 
     return False, display
 def m():
-    # mainmenu needs to be fixed
-    # if mainmenu()==True:
     game()
-    # else:
     pygame.quit()
 if __name__=='__main__':
     m()
