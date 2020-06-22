@@ -81,10 +81,10 @@ def game():
                                     if v=='rollagain': 
                                         dice()
                                         push(data_structures.dice_roll2,pop(data_structures.dice_roll))
-                                    if v=='token won':
-                                        # if plawon()==True:
-                                        #     data_structures.end=True
-                                        # else:
+                                    if isinstance(v,tuple) and v[0]=='token won':
+                                        if plawon(v[1])==True:
+                                            data_structures.end=True
+                                        else:
                                             dice()
                                             push(data_structures.dice_roll2,pop(data_structures.dice_roll))
                                     if v=='not possible':

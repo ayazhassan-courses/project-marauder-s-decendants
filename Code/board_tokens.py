@@ -414,7 +414,7 @@ def move(start,dicee):
                     new_str = new_str[1:]
                 b[start[0]][start[1]] = new_str 
             # print('what was left',b[start[0]][start[1]])
-            return 'token won'
+            return ('token won',token)
     if destination!=[]: #swapping of token
         col=destination[0][-1] #detecting error here 
         if 's' in destination[0]: #star position
